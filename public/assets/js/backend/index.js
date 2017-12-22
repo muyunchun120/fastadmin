@@ -64,9 +64,16 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'adminlte', 'form'], functi
                 Backend.api.addtabs($(this).data("url"));
             });
 
-            //读取FastAdmin的更新信息
-            $.ajax({
-                url: Config.fastadmin.api_url + '/news/index',
+            var newlist = {"newslist":[{"id":"8","title":"admin插件开发教程之目录文件介绍","content":"<p>admin插件开发教程之目录文件介绍<br><\/p>","url":"http:\/\/forum.admin.net\/d\/282","createtime":"1505395180","updatetime":"1505395180","weigh":"8","status":"normal","status_text":"Normal"},{"id":"7","title":"admin插件开发教程之简明开发教程","content":"<p>admin插件开发教程之简明开发教程<br><\/p>","url":"http:\/\/forum.admin.net\/d\/324","createtime":"1505395159","updatetime":"1505395159","weigh":"7","status":"normal","status_text":"Normal"},{"id":"6","title":"admin的HTML版和ThinkPHP版有什么区别","content":"<p>admin的HTML版和ThinkPHP版有什么区别<br><\/p>","url":"http:\/\/forum.admin.net\/d\/244","createtime":"1505395111","updatetime":"1505395111","weigh":"6","status":"normal","status_text":"Normal"},{"id":"5","title":"提示“未知的数据格式或网络错误”时该如何排查错误？","content":"<p>提示“未知的数据格式或网络错误”时该如何排查错误？<br><\/p>","url":"http:\/\/forum.admin.net\/d\/56","createtime":"1505395088","updatetime":"1505395088","weigh":"5","status":"normal","status_text":"Normal"},{"id":"4","title":"一张图解析admin中的表格列表的功能","content":"<p>一张图解析admin中的表格列表的功能<br><\/p>","url":"http:\/\/forum.admin.net\/d\/323","createtime":"1505395069","updatetime":"1505395069","weigh":"4","status":"normal","status_text":"Normal"},{"id":"3","title":"官方增值服务正式上线！","content":"<p>官网增值服务正式上线！<br><\/p>","url":"http:\/\/www.admin.net\/service.html","createtime":"1503641537","updatetime":"1503641548","weigh":"3","status":"normal","status_text":"Normal"},{"id":"2","title":"admin插件市场正式上线！","content":"<p>admin插件市场正式上线！<br><\/p>","url":"http:\/\/www.admin.net\/store.html","createtime":"1503641508","updatetime":"1503641508","weigh":"2","status":"normal","status_text":"Normal"},{"id":"1","title":"admin全新官网上线！","content":"<p>经过近半个月时间的开发，admin全新官网正式上线<\/p>","url":"http:\/\/www.admin.net","createtime":"1503641464","updatetime":"1503641464","weigh":"1","status":"normal","status_text":"Normal"}],"new":8,"url":"http:\/\/www.admin.net?ref=news"};
+            $(".notifications-menu > a span").text(newlist.new > 0 ? newlist.new : '');
+            $(".notifications-menu .footer a").attr("href", newlist.url);
+            $.each(newlist.newslist, function (i, j) {
+                var item = '<li><a href="' + j.url + '" target="_blank"><i class="' + j.icon + '"></i> ' + j.title + '</a></li>';
+                $(item).appendTo($(".notifications-menu ul.menu"));
+            });
+            //读取admin的更新信息
+            /*$.ajax({
+                url: Config.admin.api_url + '/news/index',
                 type: 'post',
                 dataType: 'jsonp',
                 success: function (ret) {
@@ -77,12 +84,12 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'adminlte', 'form'], functi
                         $(item).appendTo($(".notifications-menu ul.menu"));
                     });
                 }
-            });
+            });*/
 
             //版本检测
-            var checkupdate = function (ignoreversion, tips) {
+            /*var checkupdate = function (ignoreversion, tips) {
                 $.ajax({
-                    url: Config.fastadmin.api_url + '/version/check',
+                    url: Config.admin.api_url + '/version/check',
                     type: 'post',
                     data: {version: Config.fastadmin.version},
                     dataType: 'jsonp',
@@ -114,17 +121,17 @@ define(['jquery', 'bootstrap', 'backend', 'addtabs', 'adminlte', 'form'], functi
                         }
                     }
                 });
-            };
+            };*/
 
             //读取版本检测信息
-            var ignoreversion = localStorage.getItem("ignoreversion");
+            /*var ignoreversion = localStorage.getItem("ignoreversion");
             if (ignoreversion !== "*") {
                 checkupdate(ignoreversion, false);
             }
             //手动检测版本信息
             $("a[data-toggle='checkupdate']").on('click', function () {
                 checkupdate('', true);
-            });
+            });*/
 
             //切换左侧sidebar显示隐藏
             $(document).on("click fa.event.toggleitem", ".sidebar-menu li > a", function (e) {

@@ -32,7 +32,7 @@ return [
     'Recent discussion'     => '最新发贴',
     'Server info'           => '服务器信息',
     'PHP version'           => 'PHP版本',
-    'Fastadmin version'     => 'FastAdmin版本',
+    'Fastadmin version'     => 'Admin版本',
     'Sapi name'             => '运行方式',
     'Debug mode'            => '调试模式',
     'Software'              => '环境信息',
