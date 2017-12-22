@@ -336,7 +336,7 @@ class Goods extends Backend
     /**
      * 导入
      */
-    protected function import()
+    public function import()
     {
         $file = $this->request->request('file');
         if (!$file)
@@ -403,6 +403,12 @@ class Goods extends Backend
                     $row[$fieldArr[$k]] = $v;
                 }
             }
+
+            if ($this->dataLimit)
+            {
+                $row[$this->dataLimitField] = $this->auth->id;
+            }
+
             if ($row)
             {
                 $insert[] = $row;
