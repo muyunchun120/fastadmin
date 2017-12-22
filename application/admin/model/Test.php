@@ -4,10 +4,10 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Goods extends Model
+class Test extends Model
 {
     // 表名
-    protected $name = 'goods';
+    protected $name = 'test';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'int';
@@ -18,26 +18,26 @@ class Goods extends Model
     
     // 追加属性
     protected $append = [
-        /*'week_text',
+        'week_text',
         'flag_text',
         'genderdata_text',
         'hobbydata_text',
         'refreshtime_text',
         'status_text',
-        'state_text'*/
+        'state_text'
     ];
     
 
     protected static function init()
     {
-        /*self::afterInsert(function ($row) {
+        self::afterInsert(function ($row) {
             $pk = $row->getPk();
             $row->getQuery()->where($pk, $row[$pk])->update(['weigh' => $row[$pk]]);
-        });*/
+        });
     }
 
     
-    /*public function getWeekList()
+    public function getWeekList()
     {
         return ['monday' => __('Week monday'),'tuesday' => __('Week tuesday'),'wednesday' => __('Week wednesday')];
     }     
@@ -137,7 +137,7 @@ class Goods extends Model
     protected function setRefreshtimeAttr($value)
     {
         return $value && !is_numeric($value) ? strtotime($value) : $value;
-    }*/
+    }
 
 
 }
