@@ -23,7 +23,6 @@ class Goods extends Backend
     public function _initialize()
     {
         parent::_initialize();
-        $this->dataLimit = true;
         $this->model = model('Goods');
 //        $this->view->assign("weekList", $this->model->getWeekList());
 //        $this->view->assign("flagList", $this->model->getFlagList());
@@ -118,7 +117,7 @@ class Goods extends Backend
                   $v = is_array($v) ? implode(',', $v) : $v;
                   }
                  */
-                if ($this->dataLimit)
+                if (!$this->dataLimit)
                 {
                     $params[$this->dataLimitField] = $this->auth->id;
                 }
