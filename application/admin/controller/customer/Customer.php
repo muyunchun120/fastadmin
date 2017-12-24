@@ -57,6 +57,7 @@ class Customer extends Backend
                 ->count();
 
             $list = $this->model
+                ->field('fa_customer.*,fa_admin.nickname')
                 ->where($where)
                 ->order($sort, $order)
                 ->join('fa_admin','fa_admin.id = fa_customer.admin_id','left')

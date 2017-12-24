@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'Id'  =>  'ID',
     'Customer_name'  =>  '客户名称',
     'User_name'  =>  '姓名',
     'Mobile'  =>  '手机号',
