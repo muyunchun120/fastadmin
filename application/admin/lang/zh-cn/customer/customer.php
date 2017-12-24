@@ -1,0 +1,33 @@
+<?php
+
+return [
+    'Customer_name'  =>  '客户名称',
+    'User_name'  =>  '姓名',
+    'Mobile'  =>  '手机号',
+    'Address'  =>  '详细地址',
+    'Createtime'  =>  '创建时间',
+    'Updatetime'  =>  '更新时间',
+    'Status'  =>  '状态',
+    'State'  =>  '状态值',
+    'State 0'  =>  '禁用',
+    'State 1'  =>  '正常',
+    'State 2'  =>  '推荐',
+    'Buy_num'  =>  '购买次数',
+    'Last_buy_time'  =>  '最后购买日期',
+    'Last_buy_money'  =>  '最后购买金额',
+    'Total_money'  =>  '购买总金额',
+    'Total_integral'  =>  '总积分元',
+    'Exchange_integral'  =>  '兑换积分元',
+    'Surplus_integral'  =>  '剩余积分元',
+    'Admin_id'  =>  '管理员ID',
+    'Invoice_title'  =>  '发票抬头',
+    'Tin'  =>  '纳税人识别号',
+    'Company_address'  =>  '公司地址',
+    'Company_mobile'  =>  '公司电话',
+    'Bank_deposit'  =>  '开户银行',
+    'Bank_number'  =>  '银行帐号',
+    'Customer_type'  =>  '客户类型',
+    'Customer_type 0'  =>  '普通客户',
+    'Customer_type 1'  =>  'VIP客户',
+    'Remark'  =>  '备注'
+];
