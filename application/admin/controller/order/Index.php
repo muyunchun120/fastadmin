@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller\customer;
+namespace app\admin\controller\order;
 
 use app\common\controller\Backend;
 
@@ -8,25 +8,25 @@ use think\Controller;
 use think\Request;
 
 /**
- * 客户信息
+ * 
  *
  * @icon fa fa-circle-o
  */
-class Customer extends Backend
+class Index extends Backend
 {
     
     /**
-     * Customer模型对象
+     * Order模型对象
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = model('Customer');
-        $this->view->assign("statusList", $this->model->getStatusList());
-        $this->view->assign("stateList", $this->model->getStateList());
-        $this->view->assign("customerTypeList", $this->model->getCustomerTypeList());
+        $this->model = model('Order');
+        $this->view->assign("billList", $this->model->getBillList());
+        $this->view->assign("paymentMethodList", $this->model->getPaymentMethodList());
+        $this->view->assign("orderStatusList", $this->model->getOrderStatusList());
     }
     
     /**
@@ -34,7 +34,6 @@ class Customer extends Backend
      * 因此在当前控制器中可不用编写增删改查的代码,如果需要自己控制这部分逻辑
      * 需要将application/admin/library/traits/Backend.php中对应的方法复制到当前控制器,然后进行修改
      */
-
     /**
      * 查看
      */
@@ -53,14 +52,11 @@ class Customer extends Backend
             $total = $this->model
                 ->where($where)
                 ->order($sort, $order)
-                ->join('fa_admin','fa_admin.id = fa_customer.admin_id','left')
                 ->count();
 
             $list = $this->model
-                ->field('fa_customer.*,fa_admin.nickname')
                 ->where($where)
                 ->order($sort, $order)
-                ->join('fa_admin','fa_admin.id = fa_customer.admin_id','left')
                 ->limit($offset, $limit)
                 ->select();
 
@@ -424,97 +420,10 @@ class Customer extends Backend
         $this->success();
     }
 
-    /**
-     * @return \think\response\Json
-     */
-    public function get_customer()
+    public function get_id()
     {
-        //设置过滤方法
-        $this->request->filter(['strip_tags', 'htmlspecialchars']);
-
-        //搜索关键词,客户端输入以空格分开,这里接收为数组
-        $word = (array) $this->request->request("q_word/a");
-        //当前页
-        $page = $this->request->request("page");
-        //分页大小
-        $pagesize = $this->request->request("per_page");
-        //搜索条件
-        $andor = $this->request->request("and_or");
-        //排序方式
-        $orderby = (array) $this->request->request("orderBy/a");
-        //显示的字段
-        $field = $this->request->request("field");
-        //主键
-        $primarykey = $this->request->request("pkey_name");
-        //主键值
-        $primaryvalue = $this->request->request("pkey_value");
-        //搜索字段
-        $searchfield = (array) $this->request->request("search_field/a");
-        //自定义搜索条件
-        $custom = (array) $this->request->request("custom/a");
-        $order = [];
-        foreach ($orderby as $k => $v)
-        {
-            $lv = explode(' ',$v);
-            if(!array_key_exists(1,$lv)){
-                $lv[1] = 'asc';
-            }
-            $order[$lv[0]] = $lv[1];
-        }
-
-        $field = $field ? $field : 'name';
-
-        //如果有primaryvalue,说明当前是初始化传值
-        if ($primaryvalue !== null)
-        {
-            $where = [$primarykey => ['in', $primaryvalue]];
-        }
-        else
-        {
-            $where = function($query) use($word, $andor, $field, $searchfield, $custom) {
-                foreach ($word as $k => $v)
-                {
-                    foreach ($searchfield as $m => $n)
-                    {
-                        $query->where($n, "like", "%{$v}%", $andor);
-                    }
-                }
-                if ($custom && is_array($custom))
-                {
-                    foreach ($custom as $k => $v)
-                    {
-                        $query->where($k, '=', $v);
-                    }
-                }
-            };
-        }
-        $adminIds = $this->getDataLimitAdminIds();
-
-        if (is_array($adminIds))
-        {
-            $this->model->where($this->dataLimitField, 'in', $adminIds);
-        }
-        $list = [];
-        $total = $this->model->where($where)->count();
-        if ($total > 0)
-        {
-            if (is_array($adminIds))
-            {
-                $this->model->where($this->dataLimitField, 'in', $adminIds);
-            }
-            $list = $this->model->where($where)
-                ->order($order)
-                ->page($page, $pagesize)
-                ->field("{$primarykey},{$field}")
-                ->field("password,salt", true)
-                ->select();
-        }
-        foreach($list as &$row){
-            $row['name'] = $row['customer_name'];
-        }
-        unset($row);
-        //这里一定要返回有list这个字段,total是可选的,如果total<=list的数量,则会隐藏分页按钮
-        return json(['list' => $list, 'total' => $total]);
+        return json(['val'=>'ZK17122501']);
     }
+
 
 }

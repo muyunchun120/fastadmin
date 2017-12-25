@@ -1,0 +1,94 @@
+<form id="edit-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <div class="form-group">
+        <label for="c-order_id" class="control-label col-xs-12 col-sm-2">{:__('Order_id')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-order_id" data-rule="required" data-source="order/index" class="form-control selectpage" name="row[order_id]" type="text" value="{$row.order_id}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-customer_name" class="control-label col-xs-12 col-sm-2">{:__('Customer_name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-customer_name" data-rule="required" class="form-control" name="row[customer_name]" type="text" value="{$row.customer_name}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-goods_ids" class="control-label col-xs-12 col-sm-2">{:__('Goods_ids')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-goods_ids" data-rule="required" data-source="goods/index" data-multiple="true" class="form-control selectpage" name="row[goods_ids]" type="text" value="{$row.goods_ids}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-bill" class="control-label col-xs-12 col-sm-2">{:__('Bill')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-bill" data-rule="required" class="form-control selectpicker" name="row[bill]">
+                {foreach name="billList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.bill"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-order_adds" class="control-label col-xs-12 col-sm-2">{:__('Order_adds')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-order_adds" data-rule="required" class="form-control" name="row[order_adds]" type="number" value="{$row.order_adds}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-delivery_time" class="control-label col-xs-12 col-sm-2">{:__('Delivery_time')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-delivery_time" data-rule="required" class="form-control datetimepicker" data-date-format="YYYY-MM-DD HH:mm:ss" data-use-current="true" name="row[delivery_time]" type="text" value="{$row.delivery_time|datetime}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-payment_method" class="control-label col-xs-12 col-sm-2">{:__('Payment_method')}:</label>
+        <div class="col-xs-12 col-sm-8">
+                        
+            <select  id="c-payment_method" data-rule="required" class="form-control selectpicker" name="row[payment_method]">
+                {foreach name="paymentMethodList" item="vo"}
+                    <option value="{$key}" {in name="key" value="$row.payment_method"}selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-freight_single_number" class="control-label col-xs-12 col-sm-2">{:__('Freight_single_number')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-freight_single_number" data-rule="required" class="form-control" name="row[freight_single_number]" type="text" value="{$row.freight_single_number}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-invoice_carrier_number" class="control-label col-xs-12 col-sm-2">{:__('Invoice_carrier_number')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-invoice_carrier_number" data-rule="required" class="form-control" name="row[invoice_carrier_number]" type="text" value="{$row.invoice_carrier_number}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-order_status" class="control-label col-xs-12 col-sm-2">{:__('Order_status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            
+            <div class="radio">
+            {foreach name="orderStatusList" item="vo"}
+            <label for="row[order_status]-{$key}"><input id="row[order_status]-{$key}" name="row[order_status]" type="radio" value="{$key}" {in name="key" value="$row.order_status"}checked{/in} /> {$vo}</label> 
+            {/foreach}
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="c-remark" class="control-label col-xs-12 col-sm-2">{:__('Remark')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-remark" class="form-control " rows="5" name="row[remark]" cols="50">{$row.remark}</textarea>
+        </div>
+    </div>
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

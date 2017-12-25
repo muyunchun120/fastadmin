@@ -28,7 +28,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'customer_name', title: __('Customer_name')},
                         {field: 'user_name', title: __('User_name')},
 //                        {field: 'address', title: __('Address'),width:'100%'},
-                        {field: 'customer_type', title: __('Customer_type'), operate:false},
+                        {field: 'customer_type', title: __('Customer_type')},
 //                        {field: 'createtime', title: __('Createtime'), formatter: Table.api.formatter.datetime},
 //                        {field: 'updatetime', title: __('Updatetime'), formatter: Table.api.formatter.datetime},
                         {field: 'buy_num', title: __('Buy_num')},
