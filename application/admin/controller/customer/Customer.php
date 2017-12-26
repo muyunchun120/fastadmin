@@ -131,13 +131,26 @@ class Customer extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : true) : $this->modelValidate;
                         $this->model->validate($validate);
                     }
+                    $addsModel = model('adds');
+
+                    $this->model->startTrans();
+
                     $result = $this->model->allowField(true)->save($params);
-                    if ($result !== false)
+
+                    $addsaveInfo['consignee'] = $params['user_name'];
+                    $addsaveInfo['mobile'] = $params['mobile'];
+                    $addsaveInfo['delivery_adds'] = $params['company_address'];
+                    $addsaveInfo['c_id'] = $this->model->id;
+                    $adds = $addsModel->save($addsaveInfo);
+
+                    if ($result !== false && $adds !== false)
                     {
+                        $this->model->commit();
                         $this->success();
                     }
                     else
                     {
+                        $this->model->rollback();
                         $this->error($this->model->getError());
                     }
                 }
