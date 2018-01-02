@@ -1,4 +1,4 @@
-define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefined, Backend, Table, Form) {
+define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], function ($, undefined, Backend, Table, Form, selectPage) {
 
     var Controller = {
         index: function () {
@@ -54,6 +54,27 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 },
                 'error': function () {
 
+                }
+            });
+
+            $('#c-customer_name').selectPage({
+                showField : 'customer_name',
+                keyField : 'id',
+                data : 'customer/customer/get_customer',
+                //选中项目后的回调处理
+                //入参：data：选中行的原始数据对象
+                eSelect : function(data){
+                    $.ajax({
+                        'url': 'order/index/get_adds',
+                        'data': {'ids':data.id},
+                        'dataType': 'json',
+                        'success': function (data) {
+                            $('#c-order_adds').val('收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds)
+                        }
+                    });
+                },
+                eClear : function(){
+                    $('#c-order_adds').val('');
                 }
             });
 

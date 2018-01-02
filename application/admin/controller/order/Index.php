@@ -19,11 +19,13 @@ class Index extends Backend
      * Order模型对象
      */
     protected $model = null;
+    protected $addsmodel = null;
 
     public function _initialize()
     {
         parent::_initialize();
         $this->model = model('Order');
+        $this->addsmodel = model('Adds');
         $this->view->assign("billList", $this->model->getBillList());
         $this->view->assign("paymentMethodList", $this->model->getPaymentMethodList());
         $this->view->assign("orderStatusList", $this->model->getOrderStatusList());
@@ -423,6 +425,27 @@ class Index extends Backend
     public function get_id()
     {
         return json(['val'=>'ZK17122501']);
+    }
+
+    public function get_adds($ids = ""){
+
+        $pk = 'c_id';
+        $adminIds = $this->getDataLimitAdminIds();
+        if (is_array($adminIds))
+        {
+            $this->addsmodel->where($this->dataLimitField, 'in', $adminIds);
+        }
+
+        if ($ids)
+        {
+            $list = $this->addsmodel->where($pk,$ids)->where('status','normal')->find();
+        }
+
+        if ($list)
+        {
+            return json($list);
+        }
+        $this->error(__('No rows were updated'));
     }
 
 

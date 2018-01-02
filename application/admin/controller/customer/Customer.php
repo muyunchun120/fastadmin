@@ -468,11 +468,7 @@ class Customer extends Backend
         $order = [];
         foreach ($orderby as $k => $v)
         {
-            $lv = explode(' ',$v);
-            if(!array_key_exists(1,$lv)){
-                $lv[1] = 'asc';
-            }
-            $order[$lv[0]] = $lv[1];
+            $order[$v[0]] = $v[1];
         }
 
         $field = $field ? $field : 'name';
@@ -522,10 +518,6 @@ class Customer extends Backend
                 ->field("password,salt", true)
                 ->select();
         }
-        foreach($list as &$row){
-            $row['name'] = $row['customer_name'];
-        }
-        unset($row);
         //这里一定要返回有list这个字段,total是可选的,如果total<=list的数量,则会隐藏分页按钮
         return json(['list' => $list, 'total' => $total]);
     }
