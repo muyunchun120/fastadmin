@@ -78,6 +78,27 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                 }
             });
 
+            $('.append').on('click',function(){
+                $('#append_table').append($("#clone_obj").clone('click,change').show());
+            });
+            $('.remove_demo').bind('click',function(){
+                $(this).parent().parent().remove();
+            });
+
+            $('.goods_info').selectPage({
+                showField : 'goods_name',
+                keyField : 'id',
+                data : 'order/index/get_goods_info',
+                //选中项目后的回调处理
+                //入参：data：选中行的原始数据对象
+                eSelect : function(data){
+                    console.log(data);
+                },
+                eClear : function(){
+
+                }
+            });
+
         },
         edit: function () {
             Controller.api.bindevent();
