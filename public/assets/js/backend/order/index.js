@@ -2,6 +2,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
 
     var Controller = {
         index: function () {
+            $(".btn-add").data("area", ["98%","98%"]);
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
@@ -100,14 +101,69 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                     obj.find('.goods_id').html(data.goods_id);
                     obj.find('.goods_cas').html(data.goods_cas);
                     obj.find('.spec').html(data.spec);
-                    obj.find('.s_price').html('<input  class="form-control" name="s_price" style="max-width:100px;" type="number" value="'+data.s_price+'">');
+                    obj.find('.s_price').html('<i class="fa fa-minus s_price_minus" style="cursor:pointer"></i>  <input  class="form-control" name="s_price" style="max-width:100px;" type="text" value="'+data.s_price+'">   <i class="fa fa-plus s_price_plus" style="cursor:pointer"></i>');
                     obj.find('.num_sum').html(data.s_price);
-                    obj.find('.number').html('<i class="fa fa-minus" style="cursor:pointer"></i>   <input class="form-control" type="text" name="number" value="1" style="max-width:45px;">  <i class="fa fa-plus" style="cursor:pointer"></i>');
+                    obj.find('.number').html('<i class="fa fa-minus number_minus" style="cursor:pointer"></i>   <input class="form-control" type="text" name="number" value="1" style="max-width:45px;">  <i class="fa fa-plus number_plus" style="cursor:pointer"></i>');
+                    Controller.MinuxPlus(obj,'number_minus',false,true); //减
+                    Controller.MinuxPlus(obj,'number_plus',true,true);//加
+                    Controller.MinuxPlus(obj,'s_price_minus',false,false);//减
+                    Controller.MinuxPlus(obj,'s_price_plus',true,false);//加
+                    obj.find("input[name='s_price']").keyup(function(){
+                        var s_price = parseFloat($(this).val());
+                        if(s_price <= 0){
+                            $(this).val(0);
+                            s_price = 0;
+                        }
+                        var number = obj.find('.number').find('input').val();
+                        var result = parseFloat(number * s_price);
+                        obj.find('.num_sum').html(result);
+                    });
+                    Controller.getSumPrice();
                 },
+
                 eClear : function(){
-                    console.log(111);
+                    obj.find('.goods_id').html('');
+                    obj.find('.goods_cas').html('');
+                    obj.find('.spec').html('');
+                    obj.find('.s_price').html('');
+                    obj.find('.num_sum').html('');
+                    obj.find('.number').html('');
                 }
             });
+        },
+        MinuxPlus:function(obj,lll,Minux,res){
+            obj.find('.'+lll).unbind('click').click(function () {
+                if(res){
+                    if(Minux){
+                        var number = parseInt(obj.find('.number').find('input').val()) + 1;//数量
+                    }else{
+                        var number = parseInt(obj.find('.number').find('input').val()) - 1 <=1 ?1:parseInt(obj.find('.number').find('input').val()) - 1;//数量
+                    }
+                    obj.find('.number').find('input').val(number);
+                    var sprice = parseFloat(obj.find('.s_price').find('input').val());//单价
+                }else{
+                    if(Minux){
+                        var sprice = parseFloat(obj.find('.s_price').find('input').val()) + 1;//单价
+                    }else{
+                        var sprice = parseFloat(obj.find('.s_price').find('input').val()) -1 <= 0 ? 0 : parseFloat(obj.find('.s_price').find('input').val()) -1;//单价
+                    }
+                    obj.find('.s_price').find('input').val(sprice);
+                    var number = obj.find('.number').find('input').val();
+                }
+                var result = parseFloat(number * sprice);
+                obj.find('.num_sum').html(result);
+                Controller.getSumPrice();
+            });
+        },
+        getSumPrice:function(){
+           var tr_all =  $('#append_table').find('tbody').children('tr');
+           var sum = 0;
+           $.each(tr_all,function(index,obj){
+               if(index >= 2){
+                   sum += parseFloat(jQuery(obj).find('.num_sum').text());
+               }
+           });
+           $('.sum_price').html(sum);
         },
         edit: function () {
             Controller.api.bindevent();
