@@ -86,6 +86,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
             });
             $('.remove_demo').bind('click',function(){
                 $(this).parent().parent().remove();
+                Controller.getSumPrice();
             });
 
 
@@ -128,6 +129,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                     obj.find('.s_price').html('');
                     obj.find('.num_sum').html('');
                     obj.find('.number').html('');
+                    Controller.getSumPrice();
                 }
             });
         },
@@ -160,7 +162,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
            var sum = 0;
            $.each(tr_all,function(index,obj){
                if(index >= 2){
-                   sum += parseFloat(jQuery(obj).find('.num_sum').text());
+                   if(parseFloat(jQuery(obj).find('.num_sum').text())){
+                       sum += parseFloat(jQuery(obj).find('.num_sum').text());
+                   }
                }
            });
            $('.sum_price').html(sum);
