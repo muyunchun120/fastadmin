@@ -457,82 +457,18 @@ class Index extends Backend
     {
         //设置过滤方法
         $this->request->filter(['strip_tags', 'htmlspecialchars']);
-
-        //搜索关键词,客户端输入以空格分开,这里接收为数组
-        $word = (array) $this->request->request("q_word/a");
-        //当前页
-        $page = $this->request->request("page");
+        $goods_name = $this->request->request("goods_name");
+        $where = '';
+        if(!empty($goods_name)){
+            $where = " goods_name like '%{$goods_name}%' ";
+        }
         //分页大小
-        $pagesize = $this->request->request("per_page");
-        //搜索条件
-        $andor = $this->request->request("and_or");
-        //排序方式
-        $orderby = (array) $this->request->request("orderBy/a");
-        //显示的字段
-        $field = $this->request->request("field");
-        //主键
-        $primarykey = $this->request->request("pkey_name");
-        //主键值
-        $primaryvalue = $this->request->request("pkey_value");
-        //搜索字段
-        $searchfield = (array) $this->request->request("search_field/a");
-        //自定义搜索条件
-        $custom = (array) $this->request->request("custom/a");
-        $order = [];
-        foreach ($orderby as $k => $v)
-        {
-            $order[$v[0]] = $v[1];
-        }
-
-        $field = $field ? $field : 'name';
-
-        //如果有primaryvalue,说明当前是初始化传值
-        if ($primaryvalue !== null)
-        {
-            $where = [$primarykey => ['in', $primaryvalue]];
-        }
-        else
-        {
-            $where = function($query) use($word, $andor, $field, $searchfield, $custom) {
-                foreach ($word as $k => $v)
-                {
-                    foreach ($searchfield as $m => $n)
-                    {
-                        $query->where($n, "like", "%{$v}%", $andor);
-                    }
-                }
-                if ($custom && is_array($custom))
-                {
-                    foreach ($custom as $k => $v)
-                    {
-                        $query->where($k, '=', $v);
-                    }
-                }
-            };
-        }
-        $adminIds = $this->getDataLimitAdminIds();
-
-        if (is_array($adminIds))
-        {
-            $this->goodsModel->where($this->dataLimitField, 'in', $adminIds);
-        }
-        $list = [];
-        $total = $this->goodsModel->where($where)->count();
-        if ($total > 0)
-        {
-            if (is_array($adminIds))
-            {
-                $this->goodsModel->where($this->dataLimitField, 'in', $adminIds);
-            }
-            $list = $this->goodsModel->where($where)
-                ->order($order)
-                ->page($page, $pagesize)
-                ->field("{$primarykey},{$field}")
-                ->field("password,salt", true)
-                ->select();
-        }
+        $list = $this->goodsModel->where($where)
+            ->order('createtime desc')
+            ->field('*')
+            ->select();
         //这里一定要返回有list这个字段,total是可选的,如果total<=list的数量,则会隐藏分页按钮
-        return json(['list' => $list, 'total' => $total]);
+        return json(['list' => $list, 'total' => count($list)]);
     }
 
 

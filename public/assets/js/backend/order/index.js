@@ -77,28 +77,37 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                     $('#c-order_adds').val('');
                 }
             });
-
+            i = 1;
             $('.append').on('click',function(){
-                $('#append_table').append($("#clone_obj").clone('click,change').show());
+                i++;
+                $('#append_table').append($("#clone_obj").clone('click,change').show().attr('id','append_obj_'+i));
+                Controller.commonSelectPage($('#append_obj_'+i));
             });
             $('.remove_demo').bind('click',function(){
                 $(this).parent().parent().remove();
             });
 
-            $('.goods_info').selectPage({
+
+        },
+        commonSelectPage:function(obj){
+            obj.find('.goods_info').selectPage({
                 showField : 'goods_name',
                 keyField : 'id',
                 data : 'order/index/get_goods_info',
                 //选中项目后的回调处理
                 //入参：data：选中行的原始数据对象
                 eSelect : function(data){
-                    console.log(data);
+                    obj.find('.goods_id').html(data.goods_id);
+                    obj.find('.goods_cas').html(data.goods_cas);
+                    obj.find('.spec').html(data.spec);
+                    obj.find('.s_price').html('<input  class="form-control" name="s_price" style="max-width:100px;" type="number" value="'+data.s_price+'">');
+                    obj.find('.num_sum').html(data.s_price);
+                    obj.find('.number').html('<i class="fa fa-minus" style="cursor:pointer"></i>   <input class="form-control" type="text" name="number" value="1" style="max-width:45px;">  <i class="fa fa-plus" style="cursor:pointer"></i>');
                 },
                 eClear : function(){
-
+                    console.log(111);
                 }
             });
-
         },
         edit: function () {
             Controller.api.bindevent();
@@ -114,6 +123,6 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
 
         }
     };
-
+    Controller.commonSelectPage($('#append_obj_1'));
     return Controller;
 });
