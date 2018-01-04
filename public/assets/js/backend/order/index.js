@@ -102,9 +102,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                     obj.find('.goods_id').html(data.goods_id);
                     obj.find('.goods_cas').html(data.goods_cas);
                     obj.find('.spec').html(data.spec);
-                    obj.find('.s_price').html('<i class="fa fa-minus s_price_minus" style="cursor:pointer"></i>  <input  class="form-control" name="s_price" style="max-width:100px;" type="text" value="'+data.s_price+'">   <i class="fa fa-plus s_price_plus" style="cursor:pointer"></i>');
+                    obj.find('.s_price').html('<i class="fa fa-minus s_price_minus btn btn-default btn-xs" style="cursor:pointer"></i>  <input  class="form-control" name="s_price" style="max-width:100px;" type="text" value="'+data.s_price+'">   <i class="fa fa-plus s_price_plus btn btn-default btn-xs" style="cursor:pointer"></i>');
                     obj.find('.num_sum').html(data.s_price);
-                    obj.find('.number').html('<i class="fa fa-minus number_minus" style="cursor:pointer"></i>   <input class="form-control" type="text" name="number" value="1" style="max-width:45px;">  <i class="fa fa-plus number_plus" style="cursor:pointer"></i>');
+                    obj.find('.number').html('<i class="fa fa-minus number_minus btn btn-default btn-xs" style="cursor:pointer"></i>   <input class="form-control" type="text" name="number" value="1" style="max-width:45px;">  <i class="fa fa-plus number_plus btn btn-default btn-xs" style="cursor:pointer"></i>');
                     Controller.MinuxPlus(obj,'number_minus',false,true); //减
                     Controller.MinuxPlus(obj,'number_plus',true,true);//加
                     Controller.MinuxPlus(obj,'s_price_minus',false,false);//减
