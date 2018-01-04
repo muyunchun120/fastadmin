@@ -108,6 +108,8 @@ class Index extends Backend
     {
         if ($this->request->isPost())
         {
+            print_r($this->request->post());
+            die;
             $params = $this->request->post("row/a");
             if ($params)
             {
