@@ -21,6 +21,7 @@ class Index extends Backend
     protected $model = null;
     protected $addsmodel = null;
     protected $goodsModel = null;
+    protected $ordergoodsModel = null;
 
     public function _initialize()
     {
@@ -28,6 +29,7 @@ class Index extends Backend
         $this->model = model('Order');
         $this->addsmodel = model('Adds');
         $this->goodsModel = model('goods');
+        $this->ordergoodsModel = model('OrderGoods');
         $this->view->assign("billList", $this->model->getBillList());
         $this->view->assign("paymentMethodList", $this->model->getPaymentMethodList());
         $this->view->assign("orderStatusList", $this->model->getOrderStatusList());
@@ -108,9 +110,8 @@ class Index extends Backend
     {
         if ($this->request->isPost())
         {
-            print_r($this->request->post());
-            die;
-            $params = $this->request->post("row/a");
+            $params = $this->request->post('row/a');
+            $goodsparams = $this->request->post('goods_order/a');
             if ($params)
             {
                 /*
@@ -133,13 +134,37 @@ class Index extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : true) : $this->modelValidate;
                         $this->model->validate($validate);
                     }
+
+                    $this->model->startTrans();
                     $result = $this->model->allowField(true)->save($params);
-                    if ($result !== false)
-                    {
-                        $this->success();
+                    $order_id = $this->model->id;
+                    $goodsname = $goodsparams['goods_name']['_text'];
+                    foreach($goodsparams as $key => $val){
+                        if($key == 'goods_name'){
+                            unset($goodsparams[$key][0]);
+                            unset($goodsparams[$key]['_text']);
+                            $goodsparams['good_id'] = array_values($goodsparams[$key]);
+                            unset($goodsparams[$key]);
+                            $goodsparams['goods_name'] = $goodsname;
+                        }
+                        if($key == 'remark'){
+                            unset($goodsparams[$key][0]);
+                            $goodsparams['remark'] = array_values($goodsparams['remark']);
+                        }
                     }
-                    else
-                    {
+                    $goods_order_data = array();
+                    foreach($goodsparams as $i_key=>$item){
+                        foreach($item as $j_key=>$value){
+                            $goods_order_data[$j_key][$i_key] = $value;
+                            $goods_order_data[$j_key]['order_id'] = $order_id;
+                        }
+                    }
+                    $goods_order_result = $this->ordergoodsModel->allowField(true)->saveAll($goods_order_data);
+                    if($result && $goods_order_result){
+                        $this->model->commit();
+                        $this->success();
+                    }else{
+                        $this->model->rollback();
                         $this->error($this->model->getError());
                     }
                 }

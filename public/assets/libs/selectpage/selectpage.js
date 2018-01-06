@@ -730,11 +730,11 @@
 
         // CakePHP使用的措施 例:data[search][user] -> data[search][user_primary_key]
         if (input_name.match(/\]$/))
-            input_name = input_name.replace(/\]?$/, namePrefix);
+            input_name = input_name.replace(/\]?$/, namePrefix)+'][]';
         else
             input_name += namePrefix;
         if (input_id.match(/\]$/))
-            input_id = input_id.replace(/\]?$/, namePrefix);
+            input_id = input_id.replace(/\]?$/, namePrefix)+'][]';
         else
             input_id += namePrefix;
 

@@ -70,7 +70,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                         'data': {'ids':data.id},
                         'dataType': 'json',
                         'success': function (data) {
-                            $('#c-order_adds').val('收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds)
+                            $('#c-order_adds_text').html('<i class="fa fa-edit btn btn-default btn-xs" style="cursor:pointer"></i>  收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
+                            $('#c-order_adds').val(data.id);
                         }
                     });
                 },

@@ -10,7 +10,7 @@
         <label for="c-order_id" class="control-label col-xs-12 col-sm-2">{:__('Order_id')}:</label>
         <div class="col-xs-12 col-sm-9">
             <input id="c-order_id" data-rule="required" class="form-control" name="row[order_id]" type="text" value=""
-                   disabled>
+                   >
         </div>
     </div>
     <div class="form-group">
@@ -52,7 +52,8 @@
                     <td class="number"></td>
                     <td class="s_price"></td>
                     <td class="num_sum"></td>
-                    <td style="max-width: 80px;"><input type="text" name="remark" class="form-control" value=""></td>
+                    <td style="max-width: 80px;">
+                        <input type="text" name="goods_order[remark][]" class="form-control" value=""></td>
                     <td>
                         <span class="btn btn-xs btn-danger btn-remove remove_demo"><i class="fa fa-times"></i></span>
                     </td>
@@ -67,7 +68,8 @@
                     <td class="number"></td>
                     <td class="s_price"></td>
                     <td class="num_sum"></td>
-                    <td style="max-width: 80px;"><input type="text" class="form-control" name="remark" value=""></td>
+                    <td style="max-width: 80px;">
+                        <input type="text" class="form-control" name="goods_order[remark][]" value=""></td>
                     <td>
                         <span class="btn btn-xs btn-danger btn-remove remove_demo"><i class="fa fa-times"></i></span>
                     </td>
@@ -95,10 +97,14 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="c-order_adds" class="control-label col-xs-12 col-sm-2">{:__('Order_adds')}:</label>
+        <label for="c-order_adds" class="control-label col-xs-12 col-sm-2">{:__('Order_adds')}: </label>
+
         <div class="col-xs-12 col-sm-9">
-            <input id="c-order_adds" data-rule="required" class="form-control" name="row[order_adds]" type="text"
-                   disabled>
+            <span id="c-order_adds_text" class="form-control">
+                <a href="/index.php/admin/order/index/edit/ids/30" class="btn btn-xs btn-success btn-editone" title=""><i class="fa fa-pencil"></i></a>
+            </span>
+            <input id="c-order_adds" data-rule="required" class="form-control" name="row[order_adds]" type="hidden"
+            >
         </div>
     </div>
     <div class="form-group">
