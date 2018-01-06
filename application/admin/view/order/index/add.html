@@ -100,8 +100,10 @@
         <label for="c-order_adds" class="control-label col-xs-12 col-sm-2">{:__('Order_adds')}: </label>
 
         <div class="col-xs-12 col-sm-9">
-            <span id="c-order_adds_text" class="form-control">
-                <a href="/index.php/admin/order/index/edit/ids/30" class="btn btn-xs btn-success btn-editone" title=""><i class="fa fa-pencil"></i></a>
+
+            <span class="form-control">
+                 <i class="fa fa-edit btn btn-default btn-xs open_view"  style="cursor:pointer;display: none;"></i>
+                 <span id="c-order_adds_text"></span>
             </span>
             <input id="c-order_adds" data-rule="required" class="form-control" name="row[order_adds]" type="hidden"
             >

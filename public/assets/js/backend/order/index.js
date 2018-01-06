@@ -64,14 +64,28 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                 data : 'customer/customer/get_customer',
                 //选中项目后的回调处理
                 //入参：data：选中行的原始数据对象
-                eSelect : function(data){
+                eSelect : function(params){
                     $.ajax({
                         'url': 'order/index/get_adds',
-                        'data': {'ids':data.id},
+                        'data': {'ids':params.id},
                         'dataType': 'json',
                         'success': function (data) {
-                            $('#c-order_adds_text').html('<i class="fa fa-edit btn btn-default btn-xs" style="cursor:pointer"></i>  收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
+                            $('#c-order_adds_text').html(' 收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
                             $('#c-order_adds').val(data.id);
+                            $('.open_view').attr('c_id',params.id).show();
+                            $(".open_view").on('click', function () {
+                                var that = $(this);
+                                var c_id = that.attr('c_id');
+                                var add_id = $('#c-order_adds').val();
+                                var href = "address/index/get_add_info?c_id="+c_id+"&add_id="+add_id;
+                                parent.Fast.api.open(href, '修改收货地址', {
+                                    callback: function (param) {
+                                        $('#c-order_adds_text').html(' 收货人: '+ param.consignee +'  联系电话: '+ param.mobile +'  收货地址: '+ param.delivery_adds);
+                                        $('#c-order_adds').val(param.add_id);
+                                    }
+                                });
+                                return false;
+                            });
                         }
                     });
                 },
@@ -89,8 +103,6 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                 $(this).parent().parent().remove();
                 Controller.getSumPrice();
             });
-
-
         },
         commonSelectPage:function(obj){
             obj.find('.goods_info').selectPage({
