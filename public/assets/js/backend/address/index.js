@@ -31,6 +31,10 @@ define(['jquery', 'bootstrap', 'backend', 'table','toastr', 'form','selectpage',
                 var delivery_adds = that.find('.delivery_adds').text();
                 Fast.api.close({consignee: consignee, add_id: add_id,mobile:mobile,delivery_adds:delivery_adds});
             });
+
+            $('.set-normal').on('click',function(){
+               console.log($(this));
+            });
         },
         add_address:function(){
             $('#submit_address').on('click',function(){

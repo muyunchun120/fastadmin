@@ -30,8 +30,8 @@
                 <td class="mobile">{$vo.mobile}</td>
                 <td class="delivery_adds">{$vo.delivery_adds}</td>
                 <td>
-                    <a href="">编辑</a>
-                    <?php if($vo['status'] === 'normal'){echo '<span style="color:#ffc149">默认</span>';}else{echo '<a href="">设为默认</a>';}?>
+                    <a href="" class="btn btn btn-primary btn-sm">编辑</a>
+                    <?php if($vo['status'] === 'normal'){echo '<span class="btn btn-warning btn-sm">默认</span>';}else{echo '<a href="javascript:void(0)" class="btn btn-info btn-sm set-normal">设为默认</a>';}?>
                 </td>
             </tr>
             {/foreach}

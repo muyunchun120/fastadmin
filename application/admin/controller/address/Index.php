@@ -79,6 +79,7 @@ class Index extends Backend
             if(empty($postData['delivery_adds'])){
                 $this->error('详细地址不为空');
             }
+            $postData['status'] = 'hidden';
             $result = $this->addsmodel->allowField(true)->save($postData);
             if($result){
                 $this->success('添加成功');

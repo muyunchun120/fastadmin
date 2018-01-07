@@ -192,6 +192,65 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
         },
         edit: function () {
             Controller.api.bindevent();
+
+
+            $.ajax({
+                'url': 'order/index/get_id',
+                'data': {},
+                'dataType': 'json',
+                'success': function (data) {
+                    $('#c-order_id').val(data.val)
+                },
+                'error': function () {
+
+                }
+            });
+
+            $('#c-customer_name').selectPage({
+                showField : 'customer_name',
+                keyField : 'id',
+                data : 'customer/customer/get_customer',
+                //选中项目后的回调处理
+                //入参：data：选中行的原始数据对象
+                eSelect : function(params){
+                    $.ajax({
+                        'url': 'order/index/get_adds',
+                        'data': {'ids':params.id},
+                        'dataType': 'json',
+                        'success': function (data) {
+                            $('#c-order_adds_text').html(' 收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
+                            $('#c-order_adds').val(data.id);
+                            $('.open_view').attr('c_id',params.id).show();
+                            $(".open_view").on('click', function () {
+                                var that = $(this);
+                                var c_id = that.attr('c_id');
+                                var add_id = $('#c-order_adds').val();
+                                var href = "address/index/get_add_info?c_id="+c_id+"&add_id="+add_id;
+                                parent.Fast.api.open(href, '修改收货地址', {
+                                    callback: function (param) {
+                                        $('#c-order_adds_text').html(' 收货人: '+ param.consignee +'  联系电话: '+ param.mobile +'  收货地址: '+ param.delivery_adds);
+                                        $('#c-order_adds').val(param.add_id);
+                                    }
+                                });
+                                return false;
+                            });
+                        }
+                    });
+                },
+                eClear : function(){
+                    $('#c-order_adds').val('');
+                }
+            });
+            i = 1;
+            $('.append').on('click',function(){
+                i++;
+                $('#append_table').append($("#clone_obj").clone('click,change').show().attr('id','append_obj_'+i));
+                Controller.commonSelectPage($('#append_obj_'+i));
+            });
+            $('.remove_demo').bind('click',function(){
+                $(this).parent().parent().remove();
+                Controller.getSumPrice();
+            });
         },
         api: {
             bindevent: function () {
