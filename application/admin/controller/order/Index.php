@@ -453,7 +453,24 @@ class Index extends Backend
 
     public function get_id()
     {
-        return json(['val'=>'ZK17122501']);
+        $date = date('ymd');
+        $str = 'ZK'.$date;
+        $result = $this->model->where('order_id','like',"$str%")->order('id','desc')->value('order_id');
+        if($result){
+            $num = (int)(substr($result,-3,3))+1;
+            if($num>=100){
+                $strnum = $num;
+            }elseif ($num>=10){
+                $strnum = '0'.$num;
+            }else{
+                $strnum = '00'.$num;
+            }
+            $strjson = $str.$strnum;
+        }else{
+            $strjson =  $str.'001';
+        }
+
+        return json(['val'=>$strjson]);
     }
 
     public function get_adds($ids = ""){

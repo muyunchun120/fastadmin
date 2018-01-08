@@ -32,13 +32,78 @@ define(['jquery', 'bootstrap', 'backend', 'table','toastr', 'form','selectpage',
                 Fast.api.close({consignee: consignee, add_id: add_id,mobile:mobile,delivery_adds:delivery_adds});
             });
 
-            $('.set-normal').on('click',function(){
-               console.log($(this));
+            $('.set-normal').unbind('click').on('click',function(){
+                if($(this).attr('disabled')){
+                    return false;
+                }
+                $(this).attr('disabled',true);
+                var that = $(this).parent().parent();
+                var id = that.find('.address_info').val();
+                var c_id = $('#add_address').attr('c_id');
+                $.ajax({
+                    'url': 'address/index/set_normal',
+                    'type':'POST',
+                    'data': {id:id,c_id:c_id},
+                    'dataType': 'json',
+                    'success': function (data) {
+                        if(data.code === 0){
+                            $(this).attr('disabled',false);
+                            Toastr.error(data.msg);
+                        }else{
+                            Toastr.success(data.msg);
+                            $(this).attr('disabled',false);
+                            setTimeout(function(){
+                                window.location.reload();
+                            },800);
+                        }
+                    },
+                    'error': function () {
+
+                    }
+                });
+            });
+
+            $('.adds_edit').on('click',function(){
+
+                var that = $(this).parent().parent();
+
+                var id = that.find('.address_info').val();
+
+                parent.Fast.api.open("address/index/get_address?id="+id, '编辑收货地址', {
+                    callback: function (data) {
+                        window.location.reload();
+                    }
+                });
+                return false;
             });
         },
         add_address:function(){
             $('#submit_address').on('click',function(){
                 var form_data = $('#address_form').serialize();
+                $.ajax({
+                    'url': 'address/index/add_address',
+                    'type':'POST',
+                    'data': form_data,
+                    'dataType': 'json',
+                    'success': function (data) {
+                        if(data.code === 0){
+                            Toastr.error(data.msg);
+                        }else{
+                            Toastr.success(data.msg);
+                            setTimeout(function(){
+                                Fast.api.close();
+                            },1000);
+                        }
+                    },
+                    'error': function () {
+
+                    }
+                });
+            });
+        },
+        get_address:function(){
+            $('#submit_editress').on('click',function(){
+                var form_data = $('#editress_form').serialize();
                 $.ajax({
                     'url': 'address/index/add_address',
                     'type':'POST',

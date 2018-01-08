@@ -3,6 +3,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
     var Controller = {
         index: function () {
             $(".btn-add").data("area", ["98%","98%"]);
+            $(".btn-edit").data("area", ["98%","98%"]);
             // 初始化表格参数配置
             Table.api.init({
                 extend: {
@@ -38,9 +39,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                         {field: 'order_status', title: __('Order_status'), formatter: Table.api.formatter.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
-                ]
+                ],
+                onLoadSuccess:function(){
+                    $(".btn-editone").data("area", ["98%","98%"]);
+                }
             });
-
             // 为表格绑定事件
             Table.api.bindevent(table);
         },

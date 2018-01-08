@@ -64,7 +64,8 @@ class Index extends Backend
     public function add_address()
     {
         $c_id = $this->request->request('c_id');
-        if(empty($c_id)){
+        $type = $this->request->request('type');
+        if(empty($c_id) && $type != 'edit'){
             $this->error('客户ID不为空');
         }
         if ($this->request->isAjax()){
@@ -80,16 +81,43 @@ class Index extends Backend
                 $this->error('详细地址不为空');
             }
             $postData['status'] = 'hidden';
-            $result = $this->addsmodel->allowField(true)->save($postData);
-            if($result){
-                $this->success('添加成功');
+            if(!empty($type)){
+                $id = $this->request->post('id');
+                $where = array('id'=>$id);
+                unset($postData['type']);
+                $msg = '修改';
+                $result = $this->addsmodel->allowField(true)->where($where)->update($postData);
             }else{
-                $this->error('添加失败');
+                $msg = '添加';
+                $result = $this->addsmodel->allowField(true)->save($postData);
+            }
+            if($result){
+                $this->success($msg.'成功');
+            }else{
+                $this->error($msg.'失败');
             }
         }
         $this->view->assign('c_id',$c_id);
         return $this->view->fetch('add');
     }
+
+
+    public function get_address()
+    {  $this->request->filter(['strip_tags', 'htmlspecialchars']);
+        $id = $this->request->get('id');
+        $where = array('id'=>$id);
+
+        $list = $this->addsmodel->where($where)
+            ->field('id,consignee,mobile,delivery_adds')
+            ->find();
+        $this->view->assign("id", $list['id']);
+        $this->view->assign("consignee", $list['consignee']);
+        $this->view->assign("mobile", $list['mobile']);
+        $this->view->assign("delivery_adds", $list['delivery_adds']);
+
+        return $this->view->fetch('edit');
+    }
+
 
     /**
      * 获取地址信息
@@ -109,6 +137,50 @@ class Index extends Backend
         $this->view->assign("add_id", $add_id);
         $this->view->assign("c_id", $c_id);
         return $this->view->fetch('info');
+    }
+
+    public function get_edit_info()
+    {
+        $this->request->filter(['strip_tags', 'htmlspecialchars']);
+        $c_id = $this->request->get('c_id');
+        $add_id = $this->request->get('add_id');
+        $where = array('c_id'=>$c_id);
+
+        $list = $this->addsmodel->where($where)
+            ->field('id,consignee,mobile,delivery_adds,status')
+            ->order('createtime desc')
+            ->select();
+        $this->view->assign("list", $list);
+        $this->view->assign("add_id", $add_id);
+        $this->view->assign("c_id", $c_id);
+        return $this->view->fetch('info');
+    }
+
+
+    public function set_normal()
+    {
+        $id = $this->request->post('id');
+        $c_id = $this->request->post('c_id');
+        if(empty($id)){
+            $this->error('ID不为空');
+        }
+        if(empty($c_id)){
+            $this->error('客户ID不为空');
+        }
+        $where1 = ' id != '.$id.' and c_id = '.$c_id.' and status = "normal"';
+        $data = $this->addsmodel->field('id')->where($where1)->find()->toArray();
+
+        $res = $this->addsmodel->where(array('id'=>$data['id']))->update(array('status'=>'hidden'));
+        if($res){
+            $where = array('id'=>$id);
+            $data1 = array('status'=>'normal');
+            $result = $this->addsmodel->allowField(true)->where($where)->update($data1);
+        }
+        if($res && $result){
+            $this->success('设置成功');
+        }else{
+            $this->error('设置失败，请稍后再试');
+        }
     }
 
 }
