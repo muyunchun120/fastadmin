@@ -195,17 +195,28 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
         },
         edit: function () {
             Controller.api.bindevent();
-
-
+            var cid = $('#c-customer_name').attr('data-init');
             $.ajax({
-                'url': 'order/index/get_id',
-                'data': {},
+                'url': 'order/index/get_adds',
+                'data': {'ids':cid},
                 'dataType': 'json',
                 'success': function (data) {
-                    $('#c-order_id').val(data.val)
-                },
-                'error': function () {
-
+                    $('#c-order_adds_text').html(' 收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
+                    $('#c-order_adds').val(data.id);
+                    $('.open_view').attr('c_id',cid).show();
+                    $(".open_view").on('click', function () {
+                        var that = $(this);
+                        var c_id = that.attr('c_id');
+                        var add_id = $('#c-order_adds').val();
+                        var href = "address/index/get_add_info?c_id="+c_id+"&add_id="+add_id;
+                        parent.Fast.api.open(href, '修改收货地址', {
+                            callback: function (param) {
+                                $('#c-order_adds_text').html(' 收货人: '+ param.consignee +'  联系电话: '+ param.mobile +'  收货地址: '+ param.delivery_adds);
+                                $('#c-order_adds').val(param.add_id);
+                            }
+                        });
+                        return false;
+                    });
                 }
             });
 

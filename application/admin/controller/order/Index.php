@@ -184,6 +184,7 @@ class Index extends Backend
     public function edit($ids = NULL)
     {
         $row = $this->model->get($ids);
+        $good_order = $this->ordergoodsModel->where('order_id',$ids)->select();
         if (!$row)
             $this->error(__('No Results were found'));
         $adminIds = $this->getDataLimitAdminIds();
@@ -233,6 +234,7 @@ class Index extends Backend
             $this->error(__('Parameter %s can not be empty', ''));
         }
         $this->view->assign("row", $row);
+        $this->view->assign("good_order", $good_order);
         return $this->view->fetch();
     }
 
