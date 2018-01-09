@@ -106,6 +106,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                 $(this).parent().parent().remove();
                 Controller.getSumPrice();
             });
+            Controller.commonSelectPage($('#append_obj_1'));
         },
         commonSelectPage:function(obj){
             obj.find('.goods_info').selectPage({
@@ -195,32 +196,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
         },
         edit: function () {
             Controller.api.bindevent();
-            var cid = $('#c-customer_name').attr('data-init');
-            $.ajax({
-                'url': 'order/index/get_adds',
-                'data': {'ids':cid},
-                'dataType': 'json',
-                'success': function (data) {
-                    $('#c-order_adds_text').html(' 收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
-                    $('#c-order_adds').val(data.id);
-                    $('.open_view').attr('c_id',cid).show();
-                    $(".open_view").on('click', function () {
-                        var that = $(this);
-                        var c_id = that.attr('c_id');
-                        var add_id = $('#c-order_adds').val();
-                        var href = "address/index/get_add_info?c_id="+c_id+"&add_id="+add_id;
-                        parent.Fast.api.open(href, '修改收货地址', {
-                            callback: function (param) {
-                                $('#c-order_adds_text').html(' 收货人: '+ param.consignee +'  联系电话: '+ param.mobile +'  收货地址: '+ param.delivery_adds);
-                                $('#c-order_adds').val(param.add_id);
-                            }
-                        });
-                        return false;
-                    });
-                }
-            });
-
-            $('#c-customer_name').selectPage({
+            $('.selectpage1').selectPage({
                 showField : 'customer_name',
                 keyField : 'id',
                 data : 'customer/customer/get_customer',
@@ -234,20 +210,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                         'success': function (data) {
                             $('#c-order_adds_text').html(' 收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
                             $('#c-order_adds').val(data.id);
-                            $('.open_view').attr('c_id',params.id).show();
-                            $(".open_view").on('click', function () {
-                                var that = $(this);
-                                var c_id = that.attr('c_id');
-                                var add_id = $('#c-order_adds').val();
-                                var href = "address/index/get_add_info?c_id="+c_id+"&add_id="+add_id;
-                                parent.Fast.api.open(href, '修改收货地址', {
-                                    callback: function (param) {
-                                        $('#c-order_adds_text').html(' 收货人: '+ param.consignee +'  联系电话: '+ param.mobile +'  收货地址: '+ param.delivery_adds);
-                                        $('#c-order_adds').val(param.add_id);
-                                    }
-                                });
-                                return false;
-                            });
+                            $('.open_view_edit').attr('c_id',params.id).show();
+                            Controller.get_add();
                         }
                     });
                 },
@@ -255,7 +219,10 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                     $('#c-order_adds').val('');
                 }
             });
-            i = 1;
+            $('.selectpage1').val($('.selectpage1').attr('customer_name'));
+            Controller.get_add();
+            var count = parseInt($('#arr_count').text());
+            i = count;
             $('.append').on('click',function(){
                 i++;
                 $('#append_table').append($("#clone_obj").clone('click,change').show().attr('id','append_obj_'+i));
@@ -264,6 +231,64 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
             $('.remove_demo').bind('click',function(){
                 $(this).parent().parent().remove();
                 Controller.getSumPrice();
+            });
+            Controller.EditMinuxPlus('.number_minus',false,true);
+            Controller.EditMinuxPlus('.number_plus',true,true);
+            Controller.EditMinuxPlus('.s_price_minus',false,false);
+            Controller.EditMinuxPlus('.s_price_plus',true,false);
+            var tr_all =  $('#append_table').find('tbody').children('tr');
+            $('#aaaaaaaaaaa').on('click',function(){
+                $('#append_obj_1').find('.goods_info').val('5');
+                $('#append_obj_1').find('.goods_info').selectPageRefresh();
+            });
+            $.each(tr_all,function(index,obj){
+                if(index >= 2){
+                    var id = jQuery(obj).attr('id');
+                    Controller.commonSelectPage($('#'+id));
+                }
+            });
+            /*Controller.commonSelectPage();*/
+
+        },
+        EditMinuxPlus:function(lll,Minux,res){
+            $(lll).unbind('click').click(function () {
+                var obj = $(this).parent().parent();
+                if(res){
+                    if(Minux){
+                        var number = parseInt(obj.find('.number').find('input').val()) + 1;//数量
+                    }else{
+                        var number = parseInt(obj.find('.number').find('input').val()) - 1 <=1 ?1:parseInt(obj.find('.number').find('input').val()) - 1;//数量
+                    }
+                    obj.find('.number').find('input').val(number);
+                    var sprice = parseFloat(obj.find('.s_price').find('input').val());//单价
+                }else{
+                    if(Minux){
+                        var sprice = parseFloat(obj.find('.s_price').find('input').val()) + 1;//单价
+                    }else{
+                        var sprice = parseFloat(obj.find('.s_price').find('input').val()) -1 <= 0 ? 0 : parseFloat(obj.find('.s_price').find('input').val()) -1;//单价
+                    }
+                    obj.find('.s_price').find('input').val(sprice);
+                    var number = obj.find('.number').find('input').val();
+                }
+                var result = parseFloat(number * sprice);
+                obj.find('.num_sum').html(result);
+                Controller.getSumPrice();
+            });
+        },
+        get_add:function(){
+            $('.open_view_edit').unbind();
+            $(".open_view_edit").on('click', function () {
+                var that = $(this);
+                var c_id = that.attr('c_id');
+                var add_id = $('#c-order_adds').val();
+                var href = "address/index/get_add_info?c_id="+c_id+"&add_id="+add_id;
+                parent.Fast.api.open(href, '修改收货地址', {
+                    callback: function (param) {
+                        $('#c-order_adds_text').html(' 收货人: '+ param.consignee +'  联系电话: '+ param.mobile +'  收货地址: '+ param.delivery_adds);
+                        $('#c-order_adds').val(param.add_id);
+                    }
+                });
+                return false;
             });
         },
         api: {
@@ -277,6 +302,5 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
 
         }
     };
-    Controller.commonSelectPage($('#append_obj_1'));
     return Controller;
 });

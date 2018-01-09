@@ -22,6 +22,7 @@ class Index extends Backend
     protected $addsmodel = null;
     protected $goodsModel = null;
     protected $ordergoodsModel = null;
+    protected $customerModel = null;
 
     public function _initialize()
     {
@@ -30,6 +31,7 @@ class Index extends Backend
         $this->addsmodel = model('Adds');
         $this->goodsModel = model('goods');
         $this->ordergoodsModel = model('OrderGoods');
+        $this->customerModel = model('customer');
         $this->view->assign("billList", $this->model->getBillList());
         $this->view->assign("paymentMethodList", $this->model->getPaymentMethodList());
         $this->view->assign("orderStatusList", $this->model->getOrderStatusList());
@@ -185,6 +187,8 @@ class Index extends Backend
     {
         $row = $this->model->get($ids);
         $good_order = $this->ordergoodsModel->where('order_id',$ids)->select();
+        $customer = $this->customerModel->field('customer_name')->where(array('id'=>$row['customer_name']))->find();
+        $address_info = $this->addsmodel->field('id,consignee,mobile,delivery_adds')->where(array('id'=>$row['order_adds']))->find();
         if (!$row)
             $this->error(__('No Results were found'));
         $adminIds = $this->getDataLimitAdminIds();
@@ -235,6 +239,8 @@ class Index extends Backend
         }
         $this->view->assign("row", $row);
         $this->view->assign("good_order", $good_order);
+        $this->view->assign("customer", $customer);
+        $this->view->assign("address_info", $address_info);
         return $this->view->fetch();
     }
 

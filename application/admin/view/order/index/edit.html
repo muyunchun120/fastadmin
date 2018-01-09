@@ -19,8 +19,8 @@
             <input id="c-customer_name" data-source="customer/customer/get_customer" data-params='{"field":"customer_name","search_field":"customer_name","orderBy":["id desc","updatetime"]}' data-rule="required" class="form-control selectpage" name="row[customer_name]" type="text" value="">
         </div>-->
         <div class="col-xs-12 col-sm-9">
-            <input id="c-customer_name" data-rule="required" class="form-control selectpage" name="row[customer_name]"
-                   type="text" value="" data-init="{$row.customer_name}">
+            <input id="c-customer_name" data-rule="required" class="form-control selectpage1" name="row[customer_name]"
+                   type="text" value="" customer_name = {$customer.customer_name}>
         </div>
     </div>
     <div class="form-group">
@@ -29,6 +29,7 @@
 
         </div>
         <div class="col-xs-12 col-sm-9">
+            <span id="arr_count" style="display: none"><?= count($good_order);?></span>
             <table id="append_table" class="table table-striped table-bordered table-hover" align="center"
                    style="margin-bottom:5px;">
                 <tr>
@@ -58,30 +59,34 @@
                         <span class="btn btn-xs btn-danger btn-remove remove_demo"><i class="fa fa-times"></i></span>
                     </td>
                 </tr>
-
+                <?php $total = 0;?>
                 {foreach name="good_order" item="vo"}
-                <tr id="append_obj_1">
+                <tr id="append_obj_{$key+1}">
                     <td class="goods_id">{$vo.goods_id}</td>
                     <td style="max-width:180px;">
-                        <input type="text" name="goods_order[goods_name][]" class="form-control goods_info" value="" data-init="{$vo.goods_name}"/>
+                        <input type="text" name="goods_order[goods_name][]" class="form-control goods_info" value="{$vo.goods_name}"/>
                     </td>
                     <td class="goods_cas">{$vo.goods_cas}</td>
                     <td class="spec">{$vo.spec}</td>
-                    <td class="number">{$vo.number}</td>
-                    <td class="s_price">{$vo.s_price}</td>
+                   <!-- <td class="number">{$vo.number}</td>-->
+                    <td class="number"><i class="fa fa-minus number_minus btn btn-default btn-xs" style="cursor:pointer"></i>   <input class="form-control" type="text" name="goods_order[number][]" value="{$vo.number}" style="max-width:45px;">  <i class="fa fa-plus number_plus btn btn-default btn-xs" style="cursor:pointer"></i></td>
+                    <td class="s_price">
+                        <i class="fa fa-minus s_price_minus btn btn-default btn-xs" style="cursor:pointer"></i>  <input  class="form-control" name="goods_order[s_price][]" style="max-width:100px;" type="text" value="{$vo.s_price}">   <i class="fa fa-plus s_price_plus btn btn-default btn-xs" style="cursor:pointer"></i>
+                    </td>
                     <td class="num_sum">{$vo.number*$vo.s_price}</td>
                     <td style="max-width: 80px;">
                         <input type="text" class="form-control" name="goods_order[remark][]" value="{$vo.remark}"></td>
                     <td>
                         <span class="btn btn-xs btn-danger btn-remove remove_demo"><i class="fa fa-times"></i></span>
                     </td>
+                    <?php $total += $vo['number']*$vo['s_price'];?>
                 </tr>
                 {/foreach}
             </table>
             <dd>
                 <a href="javascript:;" class="append btn btn-sm btn-success"><i class="fa fa-plus"></i></a>
                 <div style="float:right">应付金额：
-                    <text class="sum_price" style="color:#F00;font-size:17px;">0</text>
+                    <text class="sum_price" style="color:#F00;font-size:17px;"><?= $total; ?></text>
                 </div>
             </dd>
         </div>
@@ -104,8 +109,8 @@
         <div class="col-xs-12 col-sm-9">
 
             <span class="form-control">
-                 <i class="fa fa-edit btn btn-default btn-xs open_view"  style="cursor:pointer;display: none;"></i>
-                 <span id="c-order_adds_text"></span>
+                 <i class="fa fa-edit btn btn-default btn-xs open_view_edit" c_id="{$row.customer_name}"></i>
+                 <span id="c-order_adds_text">收货人：{$address_info.consignee},联系电话：{$address_info.mobile},收货地址：{$address_info.delivery_adds}</span>
             </span>
             <input id="c-order_adds" data-rule="required" class="form-control" name="row[order_adds]" type="hidden" value="{$row.order_adds}">
         </div>
