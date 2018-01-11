@@ -9,8 +9,9 @@
     <div class="form-group">
         <label for="c-order_id" class="control-label col-xs-12 col-sm-2">{:__('Order_id')}:</label>
         <div class="col-xs-12 col-sm-9">
-            <input id="c-order_id" data-rule="required" class="form-control" name="row[order_id]" type="text" value=""
-                   >
+            <input class="form-control order_id_dis" type="text" value="" disabled>
+            <input id="c-order_id" data-rule="required" class="form-control" name="row[order_id]" type="hidden" value=""
+            >
         </div>
     </div>
     <div class="form-group">
@@ -79,6 +80,8 @@
                 <a href="javascript:;" class="append btn btn-sm btn-success"><i class="fa fa-plus"></i></a>
                 <div style="float:right">应付金额：
                     <text class="sum_price" style="color:#F00;font-size:17px;">0</text>
+                    <input id="c-order_total_money" data-rule="required" class="form-control" name="row[total_money]" type="hidden"
+                    >
                 </div>
             </dd>
         </div>

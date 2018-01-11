@@ -161,8 +161,19 @@ class Index extends Backend
                             $goods_order_data[$j_key]['order_id'] = $order_id;
                         }
                     }
+
                     $goods_order_result = $this->ordergoodsModel->allowField(true)->saveAll($goods_order_data);
-                    if($result && $goods_order_result){
+                    $customerInfo = $this->customerModel->where(array('id'=>$params['customer_name']))->find();
+                    $customerSaveData = array(
+                        'buy_num'=>$customerInfo['buy_num']+1,
+                        'last_buy_time'=>time(),
+                        'last_buy_money'=>$params['total_money'],
+                        'total_money'=>$customerInfo['total_money']+(int)$params['total_money'],
+                        'total_integral'=>$customerInfo['total_integral']+(int)$params['total_money'],
+                        'surplus_integral'=>$customerInfo['surplus_integral']+(int)$params['total_money']
+                    );
+                    $customer = $this->customerModel->where(array('id'=>$params['customer_name']))->update($customerSaveData);
+                    if($result && $goods_order_result && $customer){
                         $this->model->commit();
                         $this->success();
                     }else{

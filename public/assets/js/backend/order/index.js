@@ -54,7 +54,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                 'data': {},
                 'dataType': 'json',
                 'success': function (data) {
-                    $('#c-order_id').val(data.val)
+                    $('.order_id_dis').val(data.val);
+                    $('#c-order_id').val(data.val);
                 },
                 'error': function () {
 
@@ -188,6 +189,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                }
            });
            $('.sum_price').html(sum);
+           $('#c-order_total_money').val(sum);
         },
         appendHiddenInput:function(obj,input_name,input_value)
         {
