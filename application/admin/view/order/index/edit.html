@@ -10,7 +10,7 @@
         <label for="c-order_id" class="control-label col-xs-12 col-sm-2">{:__('Order_id')}:</label>
         <div class="col-xs-12 col-sm-9">
             <input id="c-order_id" data-rule="required" class="form-control" name="row[order_id]" type="text" value="{$row.order_id}"
-            >
+            disabled>
         </div>
     </div>
     <div class="form-group">
@@ -19,8 +19,9 @@
             <input id="c-customer_name" data-source="customer/customer/get_customer" data-params='{"field":"customer_name","search_field":"customer_name","orderBy":["id desc","updatetime"]}' data-rule="required" class="form-control selectpage" name="row[customer_name]" type="text" value="">
         </div>-->
         <div class="col-xs-12 col-sm-9">
-            <input id="c-customer_name" data-rule="required" class="form-control selectpage1" name="row[customer_name]"
-                   type="text" value="" customer_name = {$customer.customer_name}>
+            <input id="c-customer_name"  class="form-control" name="row[customer_name]"
+                   type="text" value="{$customer.customer_name}"  disabled>
+            <input type="hidden" name="row[id]" value="{$row.id}">
         </div>
     </div>
     <div class="form-group">
@@ -46,7 +47,7 @@
                 <tr id="clone_obj" style="display: none">
                     <td class="goods_id"></td>
                     <td style="max-width:180px;">
-                        <input type="text" name="goods_order[goods_name][]" class="form-control goods_info" value=""/>
+                        <input type="text" name="" class="form-control goods_info" value=""/>
                     </td>
                     <td class="goods_cas"></td>
                     <td class="spec"></td>
@@ -54,7 +55,7 @@
                     <td class="s_price"></td>
                     <td class="num_sum"></td>
                     <td style="max-width: 80px;">
-                        <input type="text" name="goods_order[remark][]" class="form-control" value=""></td>
+                        <input type="text" name="" class="form-control remark" value=""></td>
                     <td>
                         <span class="btn btn-xs btn-danger btn-remove remove_demo"><i class="fa fa-times"></i></span>
                     </td>
@@ -64,18 +65,20 @@
                 <tr id="append_obj_{$key+1}">
                     <td class="goods_id">{$vo.goods_id}</td>
                     <td style="max-width:180px;">
-                        <input type="text" name="goods_order[goods_name][]" class="form-control goods_info" value="{$vo.goods_name}"/>
+                        <span>{$vo.goods_name}</span>
+                        <input type="hidden" name="goods_order[{$key+1}][goods_name]" class="form-control" value="{$vo.good_id}"/>
+                        <input type="hidden" name="goods_order[{$key+1}][id]" class="form-control delete_id" value="{$vo.id}"/>
                     </td>
                     <td class="goods_cas">{$vo.goods_cas}</td>
                     <td class="spec">{$vo.spec}</td>
-                   <!-- <td class="number">{$vo.number}</td>-->
-                    <td class="number"><i class="fa fa-minus number_minus btn btn-default btn-xs" style="cursor:pointer"></i>   <input class="form-control" type="text" name="goods_order[number][]" value="{$vo.number}" style="max-width:45px;">  <i class="fa fa-plus number_plus btn btn-default btn-xs" style="cursor:pointer"></i></td>
+                    <td class="number"><i class="fa fa-minus number_minus btn btn-default btn-xs" style="cursor:pointer"></i>   <input class="form-control" type="text" name="goods_order[{$key+1}][number]" value="{$vo.number}" style="max-width:45px;">  <i class="fa fa-plus number_plus btn btn-default btn-xs" style="cursor:pointer"></i>
+                    </td>
                     <td class="s_price">
-                        <i class="fa fa-minus s_price_minus btn btn-default btn-xs" style="cursor:pointer"></i>  <input  class="form-control" name="goods_order[s_price][]" style="max-width:100px;" type="text" value="{$vo.s_price}">   <i class="fa fa-plus s_price_plus btn btn-default btn-xs" style="cursor:pointer"></i>
+                        <i class="fa fa-minus s_price_minus btn btn-default btn-xs" style="cursor:pointer"></i>  <input  class="form-control" name="goods_order[{$key+1}][s_price]" style="max-width:100px;" type="text" value="{$vo.s_price}">   <i class="fa fa-plus s_price_plus btn btn-default btn-xs" style="cursor:pointer"></i>
                     </td>
                     <td class="num_sum">{$vo.number*$vo.s_price}</td>
                     <td style="max-width: 80px;">
-                        <input type="text" class="form-control" name="goods_order[remark][]" value="{$vo.remark}"></td>
+                        <input type="text" class="form-control" name="goods_order[{$key+1}][remark]" value="{$vo.remark}"></td>
                     <td>
                         <span class="btn btn-xs btn-danger btn-remove remove_demo"><i class="fa fa-times"></i></span>
                     </td>

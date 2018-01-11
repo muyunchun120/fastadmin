@@ -143,28 +143,17 @@ class Index extends Backend
                     $this->model->startTrans();
                     $result = $this->model->allowField(true)->save($params);
                     $order_id = $this->model->id;
-                    $goodsname = $goodsparams['goods_name']['_text'];
-                    foreach($goodsparams as $key => $val){
-                        if($key == 'goods_name'){
-                            unset($goodsparams[$key][0]);
-                            unset($goodsparams[$key]['_text']);
-                            $goodsparams['good_id'] = array_values($goodsparams[$key]);
-                            unset($goodsparams[$key]);
-                            $goodsparams['goods_name'] = $goodsname;
-                        }
-                        if($key == 'remark'){
-                            unset($goodsparams[$key][0]);
-                            $goodsparams['remark'] = array_values($goodsparams['remark']);
-                        }
-                    }
                     $goods_order_data = array();
-                    foreach($goodsparams as $i_key=>$item){
-                        foreach($item as $j_key=>$value){
-                            $goods_order_data[$j_key][$i_key] = $value;
-                            $goods_order_data[$j_key]['order_id'] = $order_id;
+                    if($goodsparams){
+                        foreach($goodsparams as &$item){
+                            $item['good_id'] = $item['goods_name'];
+                            $item['goods_name'] = $item['goods_name_text'][0];
+                            $item['order_id'] = $order_id;
+                            unset($item['goods_name_text']);
+                            $goods_order_data[] =$item;
                         }
+                        unset($item);
                     }
-
                     $goods_order_result = $this->ordergoodsModel->allowField(true)->saveAll($goods_order_data);
                     $customerInfo = $this->customerModel->where(array('id'=>$params['customer_name']))->find();
                     $customerSaveData = array(
@@ -200,7 +189,7 @@ class Index extends Backend
     public function edit($ids = NULL)
     {
         $row = $this->model->get($ids);
-        $good_order = $this->ordergoodsModel->where('order_id',$ids)->select();
+        $good_order = $this->ordergoodsModel->where(array('order_id'=>$ids,'status'=>1))->select();
         $customer = $this->customerModel->field('customer_name')->where(array('id'=>$row['customer_name']))->find();
         $address_info = $this->addsmodel->field('id,consignee,mobile,delivery_adds')->where(array('id'=>$row['order_adds']))->find();
         if (!$row)
@@ -234,13 +223,52 @@ class Index extends Backend
                         $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.edit' : true) : $this->modelValidate;
                         $row->validate($validate);
                     }
+                    $this->model->startTrans();
                     $result = $row->allowField(true)->save($params);
+                    $postData = $this->request->post("goods_order/a");
+                    $saveData = array(); $addData = array();
+                    if($postData){
+                        foreach($postData as &$item){
+                            if(isset($item['id']) && !empty($item['id'])){
+                                $saveData[] = $item;
+                            }else{
+                                $item['good_id'] = $item['goods_name'];
+                                $item['goods_name'] = $item['goods_name_text'][0];
+                                unset($item['goods_name_text']);
+                                $item['order_id'] = $params['id'];
+                                $addData[] = $item;
+                            }
+                        }
+                        unset($item);
+                        $save_goods_order_result = $this->ordergoodsModel->allowField(true)->isUpdate(true)->saveAll($saveData);
+                        $add_goods_order_result = $this->ordergoodsModel->allowField(true)->saveAll($addData);
+                        $deleteData = $this->request->post('delete/a');
+                        if($deleteData){
+                            $delData = array();
+                            foreach ($deleteData as $key=>$v){
+                                $delData[$key] = array('id'=>$v,'status'=>2);
+                            }
+                            $del_goods_order_result = $this->ordergoodsModel->allowField(true)->isUpdate(true)->saveAll($delData);
+                        }
+                        if ($result !== false && $save_goods_order_result !== false && $add_goods_order_result !== false)
+                        {
+                            $this->model->commit();
+                            $this->success();
+                        }
+                        else
+                        {
+                            $this->model->rollback();
+                            $this->error($row->getError());
+                        }
+                    }
                     if ($result !== false)
                     {
+                        $this->model->commit();
                         $this->success();
                     }
                     else
                     {
+                        $this->model->rollback();
                         $this->error($row->getError());
                     }
                 }

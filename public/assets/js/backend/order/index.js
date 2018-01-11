@@ -110,16 +110,18 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
             i = 1;
             $('.append').on('click',function(){
                 i++;
+                $("#clone_obj").find('.goods_info').attr('name','goods_order['+i+'][goods_name]');
+                $("#clone_obj").find('.remark').attr('name','goods_order['+i+'][remark]');
                 $('#append_table').append($("#clone_obj").clone('click,change').show().attr('id','append_obj_'+i));
-                Controller.commonSelectPage($('#append_obj_'+i));
+                Controller.commonSelectPage($('#append_obj_'+i),i);
             });
             $('.remove_demo').bind('click',function(){
                 $(this).parent().parent().remove();
                 Controller.getSumPrice();
             });
-            Controller.commonSelectPage($('#append_obj_1'));
+            Controller.commonSelectPage($('#append_obj_1'),1);
         },
-        commonSelectPage:function(obj){
+        commonSelectPage:function(obj,j){
             obj.find('.goods_info').selectPage({
                 showField : 'goods_name',
                 keyField : 'id',
@@ -128,14 +130,14 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                 //入参：data：选中行的原始数据对象
                 eSelect : function(data){
                     obj.find('.goods_id').html(data.goods_id);
-                    Controller.appendHiddenInput(obj.find('.goods_id'),'goods_order[goods_id][]',data.goods_id);
+                    Controller.appendHiddenInput(obj.find('.goods_id'),'goods_order['+j+'][goods_id]',data.goods_id);
                     obj.find('.goods_cas').html(data.goods_cas);
-                    Controller.appendHiddenInput(obj.find('.goods_cas'),'goods_order[goods_cas][]',data.goods_cas);
+                    Controller.appendHiddenInput(obj.find('.goods_cas'),'goods_order['+j+'][goods_cas]',data.goods_cas);
                     obj.find('.spec').html(data.spec);
-                    Controller.appendHiddenInput(obj.find('.spec'),'goods_order[spec][]',data.spec);
-                    obj.find('.s_price').html('<i class="fa fa-minus s_price_minus btn btn-default btn-xs" style="cursor:pointer"></i>  <input  class="form-control" name="goods_order[s_price][]" style="max-width:100px;" type="text" value="'+data.s_price+'">   <i class="fa fa-plus s_price_plus btn btn-default btn-xs" style="cursor:pointer"></i>');
+                    Controller.appendHiddenInput(obj.find('.spec'),'goods_order['+j+'][spec]',data.spec);
+                    obj.find('.s_price').html('<i class="fa fa-minus s_price_minus btn btn-default btn-xs" style="cursor:pointer"></i>  <input  class="form-control" name="goods_order['+j+'][s_price]" style="max-width:100px;" type="text" value="'+data.s_price+'">   <i class="fa fa-plus s_price_plus btn btn-default btn-xs" style="cursor:pointer"></i>');
                     obj.find('.num_sum').html(data.s_price);
-                    obj.find('.number').html('<i class="fa fa-minus number_minus btn btn-default btn-xs" style="cursor:pointer"></i>   <input class="form-control" type="text" name="goods_order[number][]" value="1" style="max-width:45px;">  <i class="fa fa-plus number_plus btn btn-default btn-xs" style="cursor:pointer"></i>');
+                    obj.find('.number').html('<i class="fa fa-minus number_minus btn btn-default btn-xs" style="cursor:pointer"></i>   <input class="form-control" type="text" name="goods_order['+j+'][number]" value="1" style="max-width:45px;">  <i class="fa fa-plus number_plus btn btn-default btn-xs" style="cursor:pointer"></i>');
                     Controller.MinuxPlus(obj,'number_minus',false,true); //减
                     Controller.MinuxPlus(obj,'number_plus',true,true);//加
                     Controller.MinuxPlus(obj,'s_price_minus',false,false);//减
@@ -208,58 +210,28 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
         },
         edit: function () {
             Controller.api.bindevent();
-            $('.selectpage1').selectPage({
-                showField : 'customer_name',
-                keyField : 'id',
-                data : 'customer/customer/get_customer',
-                //选中项目后的回调处理
-                //入参：data：选中行的原始数据对象
-                eSelect : function(params){
-                    $.ajax({
-                        'url': 'order/index/get_adds',
-                        'data': {'ids':params.id},
-                        'dataType': 'json',
-                        'success': function (data) {
-                            $('#c-order_adds_text').html(' 收货人: '+ data.consignee +'  联系电话: '+ data.mobile +'  收货地址: '+ data.delivery_adds);
-                            $('#c-order_adds').val(data.id);
-                            $('.open_view_edit').attr('c_id',params.id).show();
-                            Controller.get_add();
-                        }
-                    });
-                },
-                eClear : function(){
-                    $('#c-order_adds').val('');
-                }
-            });
-            $('.selectpage1').val($('.selectpage1').attr('customer_name'));
             Controller.get_add();
             var count = parseInt($('#arr_count').text());
             i = count;
             $('.append').on('click',function(){
                 i++;
+                $("#clone_obj").find('.goods_info').attr('name','goods_order['+i+'][goods_name]');
+                $("#clone_obj").find('.remark').attr('name','goods_order['+i+'][remark]');
                 $('#append_table').append($("#clone_obj").clone('click,change').show().attr('id','append_obj_'+i));
-                Controller.commonSelectPage($('#append_obj_'+i));
+                Controller.commonSelectPage($('#append_obj_'+i),i);
             });
+            r = 0;
             $('.remove_demo').bind('click',function(){
-                $(this).parent().parent().remove();
+                var that = $(this).parent().parent();
+                var delete_id = that.find('.delete_id').val();
+                $('#append_table').append("<input type='hidden' name='delete[]' value='"+delete_id+"'>");
+                that.remove();
                 Controller.getSumPrice();
             });
             Controller.EditMinuxPlus('.number_minus',false,true);
             Controller.EditMinuxPlus('.number_plus',true,true);
             Controller.EditMinuxPlus('.s_price_minus',false,false);
             Controller.EditMinuxPlus('.s_price_plus',true,false);
-            var tr_all =  $('#append_table').find('tbody').children('tr');
-            $('#aaaaaaaaaaa').on('click',function(){
-                $('#append_obj_1').find('.goods_info').val('5');
-                $('#append_obj_1').find('.goods_info').selectPageRefresh();
-            });
-            $.each(tr_all,function(index,obj){
-                if(index >= 2){
-                    var id = jQuery(obj).attr('id');
-                    Controller.commonSelectPage($('#'+id));
-                }
-            });
-            /*Controller.commonSelectPage();*/
 
         },
         EditMinuxPlus:function(lll,Minux,res){
