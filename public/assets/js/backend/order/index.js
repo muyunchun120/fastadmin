@@ -29,14 +29,13 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
                         {field: 'id', title: __('Id')},
                         {field: 'order_id', title: __('Order_id')},
                         {field: 'customer_name', title: __('Customer_name')},
-                        {field: 'goods_ids', title: __('Goods_ids')},
                         {field: 'bill_text', title: __('Bill'), operate:false},
-                        {field: 'order_adds', title: __('Order_adds')},
+                        // {field: 'order_adds', title: __('Order_adds')},
                         {field: 'delivery_time', title: __('Delivery_time'), formatter: Table.api.formatter.datetime},
                         {field: 'payment_method_text', title: __('Payment_method'), operate:false},
                         {field: 'freight_single_number', title: __('Freight_single_number')},
                         {field: 'invoice_carrier_number', title: __('Invoice_carrier_number')},
-                        {field: 'order_status', title: __('Order_status'), formatter: Table.api.formatter.status},
+                        {field: 'order_status', title: __('Order_status'), formatter: this.status},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
                 ],
@@ -46,6 +45,17 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','selectpage'], functio
             });
             // 为表格绑定事件
             Table.api.bindevent(table);
+        },
+        status: function (value, row, index) {
+            //颜色状态数组,可使用red/yellow/aqua/blue/navy/teal/olive/lime/fuchsia/purple/maroon
+            var colorArr = {3: 'success', 1: 'info', 2: 'danger'};
+
+            value = value.toString();
+            var color = value && typeof colorArr[value] !== 'undefined' ? colorArr[value] : 'primary';
+            value = value.charAt(0).toUpperCase() + value.slice(1);
+            //渲染状态
+            var html = '<span class="text-' + color + '"><i class="fa fa-circle"></i> ' + __('Order_status '+value) + '</span>';
+            return html;
         },
         add: function () {
             Controller.api.bindevent();

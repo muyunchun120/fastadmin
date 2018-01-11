@@ -63,8 +63,11 @@ class Index extends Backend
                 ->count();
 
             $list = $this->model
+                ->field('o.*,c.customer_name')
+                ->alias('o')
                 ->where($where)
                 ->order($sort, $order)
+                ->join('fa_customer c', 'c.id = o.customer_name')
                 ->limit($offset, $limit)
                 ->select();
 
