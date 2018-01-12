@@ -293,24 +293,31 @@ class Index extends Backend
     {
         if ($ids)
         {
-            $pk = $this->model->getPk();
-            $adminIds = $this->getDataLimitAdminIds();
-            if (is_array($adminIds))
-            {
-                $count = $this->model->where($this->dataLimitField, 'in', $adminIds);
+            $ids = !empty($ids) ? explode(',',$ids) : array();
+            $order_saveData = array(); $orderGoodsData = array();
+            foreach($ids as $key=>$order_id){
+                $order_saveData[$key] = array('id'=>$order_id,'status'=>3);
+                $orderGoodsData[$key] = array('order_id'=>$order_id);
             }
-            $list = $this->model->where($pk, 'in', $ids)->select();
-            $count = 0;
-            foreach ($list as $k => $v)
-            {
-                $count += $v->delete();
+            $this->model->startTrans();
+            $order_result = $this->model->allowField(true)->isUpdate(true)->saveAll($order_saveData);
+            $goods_order_result = true;
+            if($orderGoodsData){
+                foreach($orderGoodsData as $val){
+                    $goods_order_result = $this->ordergoodsModel->where(array('order_id'=>$val['order_id']))->update(array('status'=>3));
+                    if($goods_order_result === false){
+                        break;
+                    }
+                }
             }
-            if ($count)
+            if ($order_result !== false && $goods_order_result !== false)
             {
+                $this->model->commit();
                 $this->success();
             }
             else
             {
+                $this->model->rollback();
                 $this->error(__('No rows were deleted'));
             }
         }
