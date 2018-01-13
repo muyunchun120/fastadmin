@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-01-13 11:42:32
+Date: 2018-01-13 22:31:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1698,7 +1698,8 @@ CREATE TABLE `fa_order` (
   `admin_id` int(11) NOT NULL COMMENT '操作人',
   `status` int(1) DEFAULT '1' COMMENT '1有效  2无效  3删除',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `idx_status` (`status`) USING BTREE
+  KEY `idx_status` (`status`) USING BTREE,
+  KEY `idx_order_id` (`order_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='订单管理';
 
 -- ----------------------------
