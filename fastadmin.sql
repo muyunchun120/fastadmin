@@ -3,14 +3,14 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : fastadmin
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-01-12 15:28:19
+Date: 2018-01-13 11:42:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,7 +28,8 @@ CREATE TABLE `fa_adds` (
   `c_id` int(10) unsigned NOT NULL COMMENT '客户ID',
   `createtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updatetime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_c_id` (`c_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -67,7 +68,7 @@ CREATE TABLE `fa_admin` (
 -- ----------------------------
 -- Records of fa_admin
 -- ----------------------------
-INSERT INTO `fa_admin` VALUES ('1', 'admin', '李想', 'b7ce6917c5a74d5578f50ece250ecc83', '20n4Yp', '/uploads/20180112/c130ca8524279840ab809b0d234779e6.jpg', 'admin@admin.com', '0', '1515736990', '1492186163', '1515737013', 'a61fde7b-ad1a-439e-b41c-d27f695528b7', 'normal');
+INSERT INTO `fa_admin` VALUES ('1', 'admin', '李想', 'b7ce6917c5a74d5578f50ece250ecc83', '20n4Yp', '/uploads/20180113/4c639e970951a3864c8c76555851fdfd.jpg', 'admin@admin.com', '0', '1515813581', '1492186163', '1515813601', '33104061-12eb-40da-8db3-d85cf4d3a272', 'normal');
 INSERT INTO `fa_admin` VALUES ('2', 'admin2', 'admin2', '9a28ce07ce875fbd14172a9ca5357d3c', '2dHDmj', '/uploads/20171222/a3a35ddd5ff7ec1213486310b01e29fe.jpg', 'admin2@fastadmin.net', '0', '1515670526', '1492186163', '1515671217', '', 'normal');
 INSERT INTO `fa_admin` VALUES ('3', 'admin3', 'admin3', '1c11f945dfcd808a130a8c2a8753fe62', 'WOKJEn', '/assets/img/avatar.png', 'admin3@fastadmin.net', '0', '1501980868', '1492186201', '1501982377', '', 'normal');
 INSERT INTO `fa_admin` VALUES ('4', 'admin33', 'admin33', '1c1a0aa0c3c56a8c1a908aab94519648', 'Aybcn5', '/assets/img/avatar.png', 'admin33@fastadmin.net', '0', '1513931374', '1492186240', '1513931955', '', 'normal');
@@ -90,7 +91,7 @@ CREATE TABLE `fa_admin_log` (
   `createtime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '操作时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `name` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2502 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=2512 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
 
 -- ----------------------------
 -- Records of fa_admin_log
@@ -1279,6 +1280,16 @@ INSERT INTO `fa_admin_log` VALUES ('2498', '1', 'admin', '/admin/order/index/get
 INSERT INTO `fa_admin_log` VALUES ('2499', '1', 'admin', '/admin/order/index/add?dialog=1', '订单管理 订单列表 添加', '{\"dialog\":\"1\",\"row\":{\"order_id\":\"ZK180112004\",\"customer_name_text\":[\"\\u70df\\u53f0\\u745e\\u8c37\\u751f\\u7269\\u79d1\\u6280\\u6709\\u9650\\u516c\\u53f8\"],\"customer_name\":\"14\",\"total_money\":\"1266\",\"bill\":\"0\",\"order_adds\":\"56\",\"delivery_time\":\"2018-01-12 15:25:00\",\"payment_method\":\"1\",\"freight_single_number\":\"1234567890\",\"invoice_carrier_number\":\"0987654321\",\"order_status\":\"1\",\"remark\":\"\\u5907\\u6ce8\"},\"goods_order\":{\"2\":{\"goods_name\":\"16\",\"remark\":\"\\u5907\\u6ce82\",\"goods_id\":\"RM-SH-003\",\"goods_name_text\":[\"\\u77f3\\u6cb9\\u7837\\u542b\\u91cf\\u6d4b\\u5b9a\\u7528\\u6807\\u51c6\\u7269\\u8d28\"],\"goods_cas\":\"CAS\\u53f7\",\"spec\":\"mg\",\"number\":\"2\",\"s_price\":\"583\"},\"1\":{\"goods_id\":\"1072450041\",\"goods_name_text\":[\"\\u6e29\\u5ea6\\u8ba1\\u5ba4\\u5185\\u9ad8\\u7cbe\\u5ea6\\u6e7f\\u5ea6\\u8ba1\"],\"goods_name\":\"18\",\"goods_cas\":\"CAS\\u53f7\",\"spec\":\"G\",\"number\":\"1\",\"s_price\":\"100\",\"remark\":\"\\u5907\\u6ce81\"}}}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', '1515741980');
 INSERT INTO `fa_admin_log` VALUES ('2500', '1', 'admin', '/admin/address/index/add_address', '', '{\"c_id\":\"14\",\"consignee\":\"\\u6c6a\\u5cf0\\u90fd\",\"mobile\":\"1563234353\",\"delivery_adds\":\"\\u5317\\u4eac\\u5e02\\u660c\\u5e73\\u533a\\u660c\\u5e73\\u53bf\\u57ce32\\u53f7\\u9662\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', '1515742056');
 INSERT INTO `fa_admin_log` VALUES ('2501', '1', 'admin', '/admin/order/index/edit/ids/50?dialog=1', '订单管理 订单列表 编辑', '{\"dialog\":\"1\",\"row\":{\"id\":\"50\",\"bill\":\"0\",\"order_adds\":\"58\",\"delivery_time\":\"2018-01-12 15:25:00\",\"payment_method\":\"1\",\"freight_single_number\":\"1234567890\",\"invoice_carrier_number\":\"0987654321\",\"order_status\":\"1\",\"remark\":\"\\u5907\\u6ce8\"},\"goods_order\":{\"1\":{\"goods_name\":\"16\",\"id\":\"38\",\"number\":\"2\",\"s_price\":\"583\",\"remark\":\"\\u5907\\u6ce82\"},\"2\":{\"goods_name\":\"18\",\"id\":\"39\",\"number\":\"1\",\"s_price\":\"100\",\"remark\":\"\\u5907\\u6ce81\"}},\"ids\":\"50\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36', '1515742071');
+INSERT INTO `fa_admin_log` VALUES ('2502', '1', 'admin', '/admin/index/login?url=%2F', '登录', '{\"url\":\"\\/\",\"__token__\":\"1057da60e3337200c2c192d5e48b7af9\",\"username\":\"admin\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515813581');
+INSERT INTO `fa_admin_log` VALUES ('2503', '1', 'admin', '/admin/ajax/upload', '', '{\"name\":\"8a4960a8af90f62d!500x500.jpg\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515813600');
+INSERT INTO `fa_admin_log` VALUES ('2504', '1', 'admin', '/admin/general.profile/update', '常规管理 个人配置 更新个人信息', '{\"row\":{\"avatar\":\"\\/uploads\\/20180113\\/4c639e970951a3864c8c76555851fdfd.jpg\",\"email\":\"admin@admin.com\",\"nickname\":\"\\u674e\\u60f3\",\"password\":\"\"}}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515813601');
+INSERT INTO `fa_admin_log` VALUES ('2505', '1', 'admin', '/admin/order/index/del/ids/48', '订单管理 订单列表 删除', '{\"action\":\"del\",\"ids\":\"48\",\"params\":\"\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515814364');
+INSERT INTO `fa_admin_log` VALUES ('2506', '1', 'admin', '/admin/customer/customer/get_customer', '', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"customer_name\",\"ASC\"]],\"searchTable\":\"tbl\",\"page\":\"1\",\"per_page\":\"10\",\"and_or\":\"AND\",\"order_by\":[[\"customer_name\",\"ASC\"]],\"field\":\"customer_name\",\"pkey_name\":\"id\",\"search_field\":[\"customer_name\"],\"customer_name\":\"\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515814818');
+INSERT INTO `fa_admin_log` VALUES ('2507', '1', 'admin', '/admin/customer/customer/get_customer', '', '{\"q_word\":[\"\\u5317\\u4eac\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"customer_name\",\"ASC\"]],\"searchTable\":\"tbl\",\"page\":\"1\",\"per_page\":\"10\",\"and_or\":\"AND\",\"order_by\":[[\"customer_name\",\"ASC\"]],\"field\":\"customer_name\",\"pkey_name\":\"id\",\"search_field\":[\"customer_name\"],\"customer_name\":\"\\u5317\\u4eac\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515814824');
+INSERT INTO `fa_admin_log` VALUES ('2508', '1', 'admin', '/admin/customer/customer/get_customer', '', '{\"q_word\":[\"\\u5317\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"customer_name\",\"ASC\"]],\"searchTable\":\"tbl\",\"page\":\"1\",\"per_page\":\"10\",\"and_or\":\"AND\",\"order_by\":[[\"customer_name\",\"ASC\"]],\"field\":\"customer_name\",\"pkey_name\":\"id\",\"search_field\":[\"customer_name\"],\"customer_name\":\"\\u5317\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515814828');
+INSERT INTO `fa_admin_log` VALUES ('2509', '1', 'admin', '/admin/customer/customer/get_customer', '', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"customer_name\",\"ASC\"]],\"searchTable\":\"tbl\",\"page\":\"1\",\"per_page\":\"10\",\"and_or\":\"AND\",\"order_by\":[[\"customer_name\",\"ASC\"]],\"field\":\"customer_name\",\"pkey_name\":\"id\",\"search_field\":[\"customer_name\"],\"customer_name\":\"\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515814831');
+INSERT INTO `fa_admin_log` VALUES ('2510', '1', 'admin', '/admin/customer/customer/get_customer', '', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"customer_name\",\"ASC\"]],\"searchTable\":\"tbl\",\"page\":\"1\",\"per_page\":\"10\",\"and_or\":\"AND\",\"order_by\":[[\"customer_name\",\"ASC\"]],\"field\":\"customer_name\",\"pkey_name\":\"id\",\"search_field\":[\"customer_name\"],\"customer_name\":\"\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515814870');
+INSERT INTO `fa_admin_log` VALUES ('2511', '1', 'admin', '/admin/customer/customer/get_customer', '', '{\"q_word\":[\"\"],\"pageNumber\":\"1\",\"pageSize\":\"10\",\"andOr\":\"AND\",\"orderBy\":[[\"customer_name\",\"ASC\"]],\"searchTable\":\"tbl\",\"page\":\"1\",\"per_page\":\"10\",\"and_or\":\"AND\",\"order_by\":[[\"customer_name\",\"ASC\"]],\"field\":\"customer_name\",\"pkey_name\":\"id\",\"search_field\":[\"customer_name\"],\"customer_name\":\"\"}', '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36', '1515814876');
 
 -- ----------------------------
 -- Table structure for fa_attachment
@@ -1300,7 +1311,7 @@ CREATE TABLE `fa_attachment` (
   `storage` enum('local','upyun','qiniu') NOT NULL DEFAULT 'local' COMMENT '存储位置',
   `sha1` varchar(40) NOT NULL DEFAULT '' COMMENT '文件 sha1编码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='附件表';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='附件表';
 
 -- ----------------------------
 -- Records of fa_attachment
@@ -1321,6 +1332,7 @@ INSERT INTO `fa_attachment` VALUES ('13', '/uploads/20171224/a3a35ddd5ff7ec12134
 INSERT INTO `fa_attachment` VALUES ('14', '/uploads/20180106/4c639e970951a3864c8c76555851fdfd.jpg', '500', '889', 'jpg', '0', '13375', 'image/jpeg', '', '1515237852', '1515237852', '1515237851', 'local', '6dff31e10d8fb43a0895565f34957b64a04bd854');
 INSERT INTO `fa_attachment` VALUES ('15', '/uploads/20180112/c130ca8524279840ab809b0d234779e6.jpg', '1024', '760', 'jpg', '0', '176532', 'image/jpeg', '', '1515737008', '1515737008', '1515737007', 'local', 'c82357787e8a698800989af1eb0818161ca34ffa');
 INSERT INTO `fa_attachment` VALUES ('16', '/uploads/20180112/d47bf46d04f1309c83244f68285d0d99.csv', '', '', 'csv', '0', '36890', 'application/vnd.ms-excel', '', '1515737505', '1515737505', '1515737504', 'local', '0a5b287c3cac31b7200df57c5aa5b74945d94af6');
+INSERT INTO `fa_attachment` VALUES ('17', '/uploads/20180113/4c639e970951a3864c8c76555851fdfd.jpg', '500', '889', 'jpg', '0', '13375', 'image/jpeg', '', '1515813600', '1515813600', '1515813599', 'local', '6dff31e10d8fb43a0895565f34957b64a04bd854');
 
 -- ----------------------------
 -- Table structure for fa_auth_group
@@ -1654,7 +1666,8 @@ CREATE TABLE `fa_goods` (
   `createtime` int(12) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `updatetime` int(12) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `admin_id` int(11) NOT NULL COMMENT '操作人',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_goods_name` (`goods_name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -1684,14 +1697,15 @@ CREATE TABLE `fa_order` (
   `remark` text COMMENT '备注',
   `admin_id` int(11) NOT NULL COMMENT '操作人',
   `status` int(1) DEFAULT '1' COMMENT '1有效  2无效  3删除',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `idx_status` (`status`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='订单管理';
 
 -- ----------------------------
 -- Records of fa_order
 -- ----------------------------
 INSERT INTO `fa_order` VALUES ('47', 'ZK180112001', '9', '', '0', '57', '1515741374', '7', '00', '00', '1', '备注', '1', '1');
-INSERT INTO `fa_order` VALUES ('48', 'ZK180112002', '11', '', '0', '53', '1515741484', '8', '无发货运单号', '无发票运单号', '2', '备注', '1', '0');
+INSERT INTO `fa_order` VALUES ('48', 'ZK180112002', '11', '', '0', '53', '1515741484', '8', '无发货运单号', '无发票运单号', '2', '备注', '1', '3');
 INSERT INTO `fa_order` VALUES ('49', 'ZK180112003', '10', '', '0', '52', '1515741570', '3', '无', '无', '3', '备注', '1', '1');
 INSERT INTO `fa_order` VALUES ('50', 'ZK180112004', '14', '', '0', '58', '1515741900', '1', '1234567890', '0987654321', '1', '备注', '1', '1');
 
@@ -1712,8 +1726,10 @@ CREATE TABLE `fa_order_goods` (
   `goods_name` varchar(255) NOT NULL COMMENT '商品名称',
   `goods_cas` varchar(255) DEFAULT NULL COMMENT 'CAS',
   `spec` varchar(255) DEFAULT NULL COMMENT '规格',
-  `status` int(1) DEFAULT '1' COMMENT '1有效  2无效',
-  PRIMARY KEY (`id`) USING BTREE
+  `status` int(1) DEFAULT '1' COMMENT '1有效  2无效 3删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `indx_order_id` (`order_id`) USING BTREE,
+  KEY `idx_status` (`status`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -1722,8 +1738,8 @@ CREATE TABLE `fa_order_goods` (
 INSERT INTO `fa_order_goods` VALUES ('32', '15', '47', '0', '2', '960.00', '备注3', '1515741448', '1515741539', '15', 'CAS号', 'G', '1');
 INSERT INTO `fa_order_goods` VALUES ('33', '17', '47', '0', '1', '500.00', '备注1', '1515741448', '1515741539', '17', 'CAS号', 'mg', '1');
 INSERT INTO `fa_order_goods` VALUES ('34', '16', '47', '0', '2', '550.00', '备注2', '1515741448', '1515741539', '16', 'CAS号', 'mg', '1');
-INSERT INTO `fa_order_goods` VALUES ('35', '15', '48', '0', '2', '960.00', '', '1515741526', '1515741561', '15', 'CAS号', 'G', '1');
-INSERT INTO `fa_order_goods` VALUES ('36', '17', '48', '0', '1', '500.00', '', '1515741526', '1515741561', '17', 'CAS号', 'mg', '1');
+INSERT INTO `fa_order_goods` VALUES ('35', '15', '48', '0', '2', '960.00', '', '1515741526', '1515741561', '15', 'CAS号', 'G', '3');
+INSERT INTO `fa_order_goods` VALUES ('36', '17', '48', '0', '1', '500.00', '', '1515741526', '1515741561', '17', 'CAS号', 'mg', '3');
 INSERT INTO `fa_order_goods` VALUES ('37', '17', '49', '0', '1', '500.00', '', '1515741619', '1515741635', '17', 'CAS号', 'mg', '1');
 INSERT INTO `fa_order_goods` VALUES ('38', '16', '50', '0', '2', '583.00', '备注2', '1515741979', '1515742071', '16', 'CAS号', 'mg', '1');
 INSERT INTO `fa_order_goods` VALUES ('39', '18', '50', '1072450041', '1', '100.00', '备注1', '1515741979', '1515742071', '18', 'CAS号', 'G', '1');

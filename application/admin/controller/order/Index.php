@@ -59,6 +59,7 @@ class Index extends Backend
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $total = $this->model
                 ->where($where)
+                ->where(array('status'=>1))
                 ->order($sort, $order)
                 ->count();
 
@@ -66,6 +67,7 @@ class Index extends Backend
                 ->field('o.*,c.customer_name')
                 ->alias('o')
                 ->where($where)
+                ->where(array('o.status'=>1))
                 ->order($sort, $order)
                 ->join('fa_customer c', 'c.id = o.customer_name')
                 ->limit($offset, $limit)
