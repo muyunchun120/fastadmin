@@ -17,6 +17,7 @@ return [
     'P_status'  =>  '订单状态',
     'P_status 1'  =>  '北京',
     'P_status 2'  =>  '河南',
+    'P_status 3'  =>  '客户',
     'Createtime'  =>  '创建时间',
     'Updatetime'  =>  '更新时间',
     'Remark'  =>  '备注'

@@ -23,6 +23,7 @@ class Index extends Backend
     protected $goodsModel = null;
     protected $ordergoodsModel = null;
     protected $customerModel = null;
+    protected $purchaseModel = null;
 
     public function _initialize()
     {
@@ -31,6 +32,7 @@ class Index extends Backend
         $this->addsmodel = model('Adds');
         $this->goodsModel = model('goods');
         $this->ordergoodsModel = model('OrderGoods');
+        $this->purchaseModel = model('purchase');
         $this->customerModel = model('customer');
         $this->view->assign("billList", $this->model->getBillList());
         $this->view->assign("paymentMethodList", $this->model->getPaymentMethodList());
@@ -151,12 +153,19 @@ class Index extends Backend
                             $item['good_id'] = $item['goods_name'];
                             $item['goods_name'] = $item['goods_name_text'][0];
                             $item['order_id'] = $order_id;
+                            $item['o_id'] = $params['order_id'];
+                            $item['s_id'] = 1;
+                            $item['supplier_name'] = '米家';
                             unset($item['goods_name_text']);
                             $goods_order_data[] =$item;
                         }
                         unset($item);
                     }
+
                     $goods_order_result = $this->ordergoodsModel->allowField(true)->saveAll($goods_order_data);
+
+                    $purchase_result = $this->purchaseModel->allowField(true)->saveAll($goods_order_data);
+
                     $customerInfo = $this->customerModel->where(array('id'=>$params['customer_name']))->find();
                     $customerSaveData = array(
                         'buy_num'=>$customerInfo['buy_num']+1,
@@ -167,7 +176,7 @@ class Index extends Backend
                         'surplus_integral'=>$customerInfo['surplus_integral']+(int)$params['total_money']
                     );
                     $customer = $this->customerModel->where(array('id'=>$params['customer_name']))->update($customerSaveData);
-                    if($result && $goods_order_result && $customer){
+                    if($result && $goods_order_result && $customer && $purchase_result){
                         $this->model->commit();
                         $this->success();
                     }else{

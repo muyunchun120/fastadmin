@@ -31,7 +31,7 @@ class Purchase extends Model
 
     public function getPStatusList()
     {
-        return ['1' => __('P_status 1'),'2' => __('P_status 2')];
+        return ['1' => __('P_status 1'),'2' => __('P_status 2'),'3' => __('P_status 3')];
     }     
 
 
