@@ -23,21 +23,26 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 sortName: 'id',
                 columns: [
                     [
-                        {checkbox: true},
-                        {field: 'o_id', title: __('O_id')},
-                        {field: 'goods_id', title: __('Goods_id')},
-                        {field: 'goods_name', title: __('Goods_name')},
-                        {field: 'number', title: __('Number')},
-                        {field: 's_price', title: __('S_price')},
-                        {field: 'status', title: __('Status'), formatter: this.status},
-                        {field: 'p_price', title: __('P_price')},
-                        // {field: 's_id', title: __('S_id')},
-                        {field: 'supplier_name', title: __('Supplier_name')},
-                        // {field: 'p_status', title: __('P_status'), formatter: Table.api.formatter.status},
+                        {checkbox: true, colspan: 1,rowspan: 2},
+                        {field: 'o_id', title: __('O_id'), colspan: 1,rowspan: 2},
+                        {field: 'goods_id', title: __('Goods_id'), colspan: 1,rowspan: 2},
+                        {field: 'goods_name', title: __('Goods_name'), colspan: 1,rowspan: 2},
+                        {field: 'number', title: __('Number'), colspan: 1,rowspan: 2},
+                        {field: 's_price', title: __('S_price'), colspan: 1,rowspan: 2},
+                        {field: 'status', title: __('Status'), formatter: this.status, colspan: 1,rowspan: 2},
+                        {field: 'p_price', title: __('P_price'), colspan: 1,rowspan: 2},
+                        // {field: 's_id', title: __('S_id'), colspan: 1,rowspan: 2},
+                        {field: 'supplier_name', title: __('Supplier_name'), colspan: 1,rowspan: 2},
+                        {title: __('P_status'), colspan: 3,rowspan: 1},
                         // {field: 'createtime', title: __('Createtime'), formatter: Table.api.formatter.datetime},
                         // {field: 'updatetime', title: __('Updatetime'), formatter: Table.api.formatter.datetime},
-                        {field: 'remark', title: __('Remark')},
-                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
+                        {field: 'remark', title: __('Remark'), colspan: 1,rowspan: 2},
+                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate, colspan: 1,rowspan: 2}
+                    ],
+                    [
+                        {field: 'p_status', title: '北京'},
+                        {field: 'p_status', title: '河南'},
+                        {field: 'p_status', title: '客户'}
                     ]
                 ]
             });
@@ -49,7 +54,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             //颜色状态数组,可使用red/yellow/aqua/blue/navy/teal/olive/lime/fuchsia/purple/maroon
             var colorArr = { 1: 'red', 2: 'blue'};
 
-            value = value.toString();
+            value = value ? value.toString() : 1;
             var color = value && typeof colorArr[value] !== 'undefined' ? colorArr[value] : 'primary';
             value = value.charAt(0).toUpperCase() + value.slice(1);
             //渲染状态
